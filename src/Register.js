@@ -8,7 +8,7 @@ const Register = () => {
   const [status, setStatus] = useState('')
   const [error, setError] = useState('')
 
-  const server = 'http://localhost:3001/'
+  const server = process.env.REACT_APP_API_SERVER;
   const history = useHistory();
   /** Checks if the passwords are the same. */
   function checkPasswordsSame() {
@@ -33,7 +33,7 @@ const Register = () => {
     }
 
     // send off to server
-    const url = server + 'api/register'
+    const url = server + 'register'
     try {
       const result = await fetch(url, {
         body: JSON.stringify(obj),
