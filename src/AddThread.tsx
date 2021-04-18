@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { UserContext } from "./UserContext";
 
 interface Props {
   threadID: string;
@@ -16,11 +17,12 @@ const AddThread = ({ threadID, loadThreads }: Props) => {
   const server = process.env.REACT_APP_API_SERVER;
   const [content, setContent] = useState<string>("");
   const [title, setTitle] = useState<string>("");
+  const { username } = useContext(UserContext);
 
   /** Makes a post to the server */
   async function makeThread() {
     const thread: NewThread = {
-      username: "kiel", // username temp
+      username: username,
       content: content,
       title: title,
     };

@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
-
 const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
