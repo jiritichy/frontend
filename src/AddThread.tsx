@@ -2,41 +2,40 @@ import { useState } from "react";
 
 interface Props {
   threadID: string;
-  loadThread: () => void;
+  loadThreads: () => void;
 }
 
-interface Post {
+interface NewThread {
   username: string;
   content: string;
-  date: string;
-  threadID: string;
+  title: string;
 }
 
-const AddPost = ({ threadID, loadThread }: Props) => {
-  const [addPostOn, setAddPostOn] = useState<boolean>(false);
+const AddThread = ({ threadID, loadThreads }: Props) => {
+  const [addThreadOn, setAddThreadOn] = useState<boolean>(false);
   const server = process.env.REACT_APP_API_SERVER;
   const [content, setContent] = useState<string>("");
+  const [title, setTitle] = useState<string>("");
 
   /** Makes a post to the server */
-  async function makePost() {
-    const post: Post = {
+  async function makeThread() {
+    const thread: NewThread = {
       username: "kiel", // username temp
       content: content,
-      date: new Date().toLocaleString(),
-      threadID: threadID,
+      title: title,
     };
 
     try {
-      const result = await fetch(server + "makePost", {
-        body: JSON.stringify(post),
+      const result = await fetch(server + "newThread", {
+        body: JSON.stringify(thread),
         headers: {
           "Content-Type": "application/json",
         },
         method: "POST",
       });
       const response = await result.json();
-      loadThread();
-      setAddPostOn((current) => !current);
+      loadThreads();
+      setAddThreadOn((current) => !current);
     } catch (error) {
       // TODO error handling
     }
@@ -44,15 +43,21 @@ const AddPost = ({ threadID, loadThread }: Props) => {
 
   /** Renders the input form if needed */
   function inputForm() {
-    if (addPostOn) {
+    if (addThreadOn) {
       return (
         <div className="form-group mt-4">
+          <label className="">Title</label>
+          <input
+            type="text"
+            className="form-control"
+            onChange={(e) => setTitle(e.target.value)}
+          />
           <label className="">Content</label>
           <textarea
             onChange={(e) => setContent(e.target.value)}
             className="form-control border border-secondary"
           />
-          <button onClick={makePost} className="btn btn-primary mt-2">
+          <button onClick={makeThread} className="btn btn-primary mt-2">
             Submit
           </button>
         </div>
@@ -62,9 +67,9 @@ const AddPost = ({ threadID, loadThread }: Props) => {
     return (
       <button
         className="btn btn-primary"
-        onClick={() => setAddPostOn((current) => !current)}
+        onClick={() => setAddThreadOn((current) => !current)}
       >
-        Add Post
+        Add Thread
       </button>
     );
   }
@@ -72,4 +77,4 @@ const AddPost = ({ threadID, loadThread }: Props) => {
   return <div className="mb-5">{inputForm()}</div>;
 };
 
-export default AddPost;
+export default AddThread;
