@@ -55,8 +55,8 @@ const Thread = () => {
       <p>{thread.content}</p>
       <h4 className="mt-5">Replies:</h4>
 
-      {thread.posts.map((post) => (
-        <Post post={post} />
+      {thread.posts.map((post, index) => (
+        <Post key={index} post={post} />
       ))}
       <AddPost threadID={id} loadThread={loadThread} />
     </div>
