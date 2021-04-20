@@ -7,7 +7,6 @@ const Home = () => {
   const server = process.env.REACT_APP_API_SERVER;
 
   async function loadThreads() {
-    // console.log(process.env);
     const res = await fetch(server + "getThreads");
     const jsoned = await res.json();
     setThreads(jsoned);

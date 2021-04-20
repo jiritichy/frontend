@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -109,6 +109,9 @@ const Register = () => {
               Submit
             </button>
           </form>
+          <Link to="/login">
+            <div className="mt-1">Already registered? Click here to login!</div>
+          </Link>
           {status.length > 0 && (
             <h5 className="mt-3 alert alert-success">{status}</h5>
           )}

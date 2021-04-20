@@ -5,7 +5,7 @@ import Thread from "./Thread";
 import Register from "./Register";
 import Home from "./Home";
 import { useState } from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { HashRouter as Router, Switch, Route, Link } from "react-router-dom";
 import "./App.css";
 import { UserContext } from "./UserContext";
 
@@ -13,7 +13,7 @@ function App() {
   const [username, setUsername] = useState("");
 
   return (
-    <Router>
+    <Router basename="/">
       <UserContext.Provider value={{ username, setUsername }}>
         <Header />
         <Switch>

@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import { UserContext } from "./UserContext";
 
 const Login: React.FC = () => {
@@ -40,7 +40,6 @@ const Login: React.FC = () => {
         setStatus(response.error);
         return;
       }
-      console.log("set sessionid");
       localStorage.setItem("sessionID", response.sessionID);
       setUsernameAlias(username);
       history.push("/");
@@ -82,6 +81,9 @@ const Login: React.FC = () => {
               Submit
             </button>
           </form>
+          <Link to="/register">
+            <div className="mt-1">New user? Click here to register!</div>
+          </Link>
           {status.length > 0 && (
             <h5 className="mt-3 alert alert-danger">{status}</h5>
           )}
