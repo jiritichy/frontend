@@ -1,7 +1,10 @@
-import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useState, useEffect, useContext } from "react";
+import { IconContext } from "react-icons";
+import { ImCross } from "react-icons/im";
+import { Link, useParams, useHistory } from "react-router-dom";
 import Post from "./Post";
 import AddPost from "./AddPost";
+import { UserContext } from "./UserContext";
 
 export interface PostObj {
   username: string;
@@ -32,14 +35,40 @@ const Thread = () => {
     posts: [],
   };
 
+  const { username, setUsername } = useContext(UserContext);
   const [thread, setThread] = useState<ThreadObject>(defaultThread);
   const server = process.env.REACT_APP_API_SERVER;
   const { id } = useParams<{ id: string }>();
+  const hist = useHistory();
 
   async function loadThread() {
     const res = await fetch(server + "getThread/" + id);
     const jsoned = await res.json();
     setThread(jsoned);
+  }
+
+  async function deleteThread() {
+    // TODO are u sure
+    const res = await fetch(server + "deleteThread/" + id);
+    console.log(res.json());
+
+    // redirect to home
+    hist.push("/home");
+  }
+
+  /** Renders possible actions for owner of a thread. */
+  function renderOwnerActions() {
+    if (thread.username === username) {
+      return (
+        <IconContext.Provider value={{ size: "1em" }}>
+          <ImCross
+            onClick={deleteThread}
+            style={{ cursor: "pointer" }}
+            className="ml-2"
+          />
+        </IconContext.Provider>
+      );
+    }
   }
 
   // load all the posts for given thread
@@ -50,7 +79,12 @@ const Thread = () => {
   // TODO if posts are empty, say no posts
   return (
     <div className="container mt-3">
-      <h1>{thread.title}</h1>
+      <div className="row">
+        <div className="col d-inline-flex align-items-center">
+          <h1 className="mb-0">{thread.title}</h1>
+          {renderOwnerActions()}
+        </div>
+      </div>
       <h6>- {thread.username}</h6>
       <p>{thread.content}</p>
       <h4 className="mt-5">Replies:</h4>

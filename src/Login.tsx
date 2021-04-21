@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useHistory, Link } from "react-router-dom";
 import { UserContext } from "./UserContext";
 
@@ -7,15 +7,12 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState("");
   const [status, setStatus] = useState("");
   const history = useHistory();
-  const { username: usernameAlias, setUsername: setUsernameAlias } = useContext(
-    UserContext
-  );
+  const usernameAlias = useContext(UserContext).username;
+  const setUsernameAlias = useContext(UserContext).setUsername;
 
-  // TODO display login status in navbar
-  // TODO if sessionID set, then redirect?
-  // TODO put server globally somewhere
   const server = process.env.REACT_APP_API_SERVER;
 
+  /** Logs the user in. */
   async function login(e: React.MouseEvent) {
     e.preventDefault();
 
@@ -41,15 +38,23 @@ const Login: React.FC = () => {
         return;
       }
       localStorage.setItem("sessionID", response.sessionID);
-      setUsernameAlias(username);
-      history.push("/");
 
-      // TODO redirect to home
+      // username already used locally, so need different var name
+      setUsernameAlias(username);
+      history.push("/home");
     } catch (err) {
-      // TODO if it fails??
-      console.log(err);
+      setStatus("Failed to login. Please try again.");
     }
   }
+
+  useEffect(() => {
+    // log user out if visit the page while logged in
+    if (usernameAlias) {
+      localStorage.removeItem("sessionID");
+      setUsernameAlias("");
+      setUsername("");
+    }
+  }, []);
 
   return (
     <div className="container">
