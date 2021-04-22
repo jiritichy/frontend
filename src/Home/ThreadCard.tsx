@@ -1,5 +1,5 @@
 import { useHistory, Link } from "react-router-dom";
-import { ThreadObject } from "./Thread";
+import { ThreadObject } from "../Thread/Thread";
 
 interface Props {
   thread: ThreadObject;

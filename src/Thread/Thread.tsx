@@ -4,7 +4,7 @@ import { ImCross } from "react-icons/im";
 import { Link, useParams, useHistory } from "react-router-dom";
 import Post from "./Post";
 import AddPost from "./AddPost";
-import { UserContext } from "./UserContext";
+import { UserContext } from "../Home/UserContext";
 
 export interface PostObj {
   username: string;
@@ -50,7 +50,7 @@ const Thread = () => {
   async function deleteThread() {
     // TODO are u sure
     const res = await fetch(server + "deleteThread/" + id);
-    console.log(res.json());
+    // console.log(res.json());
 
     // redirect to home
     hist.push("/home");
@@ -78,7 +78,7 @@ const Thread = () => {
 
   // TODO if posts are empty, say no posts
   return (
-    <div className="container mt-3">
+    <div className="container mt-3 mb-5">
       <div className="row">
         <div className="col d-inline-flex align-items-center">
           <h1 className="mb-0">{thread.title}</h1>
@@ -87,12 +87,12 @@ const Thread = () => {
       </div>
       <h6>- {thread.username}</h6>
       <p>{thread.content}</p>
+      <AddPost threadID={id} loadThread={loadThread} />
       <h4 className="mt-5">Replies:</h4>
 
       {thread.posts.map((post, index) => (
-        <Post key={index} post={post} />
+        <Post key={index} post={post} threadID={id} loadThread={loadThread} />
       ))}
-      <AddPost threadID={id} loadThread={loadThread} />
     </div>
   );
 };

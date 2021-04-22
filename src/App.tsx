@@ -1,13 +1,13 @@
-import Header from "./Header";
-import Footer from "./Footer";
-import Login from "./Login";
-import Thread from "./Thread";
-import Register from "./Register";
-import Home from "./Home";
+import Header from "./Boiler/Header";
+import Footer from "./Boiler/Footer";
+import Login from "./UserAuth/Login";
+import Thread from "./Thread/Thread";
+import Register from "./UserAuth/Register";
+import Home from "./Home/Home";
 import { useState } from "react";
 import { HashRouter as Router, Switch, Route, Link } from "react-router-dom";
 import "./App.css";
-import { UserContext } from "./UserContext";
+import { UserContext } from "./Home/UserContext";
 
 function App() {
   const [username, setUsername] = useState("");

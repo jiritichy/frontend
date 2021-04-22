@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useHistory, Link } from "react-router-dom";
-import { UserContext } from "./UserContext";
+import { UserContext } from "../Home/UserContext";
 
 const Login: React.FC = () => {
   const [username, setUsername] = useState("");

@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { useState, useEffect } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
-import { UserContext } from "./UserContext";
+import { UserContext } from "../Home/UserContext";
 
 const NavBarProfile = () => {
   const server = process.env.REACT_APP_API_SERVER;
