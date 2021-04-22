@@ -11,10 +11,11 @@ const NavBarProfile = () => {
 
   async function getUsername() {
     const sessionID = localStorage.getItem("sessionID");
+    console.log(location.pathname);
+    console.log();
     try {
       const result = await fetch(server + "getUsername/" + sessionID);
       const jsoned = await result.json();
-
       // redirect to login if not logged in
       if (
         !jsoned.username &&
@@ -25,6 +26,7 @@ const NavBarProfile = () => {
       }
       setUsername(jsoned.username);
     } catch (error) {
+      history.push("/login");
       // TODO
     }
   }
