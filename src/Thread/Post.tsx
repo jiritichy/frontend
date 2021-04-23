@@ -18,7 +18,9 @@ const Post = ({ post, threadID, loadThread, getPost, indentLevel }: Props) => {
 
   // determines if the reply form will be rendered
   const [renderReplyForm, setRenderReplyForm] = useState<Boolean>(false);
-  const padding = indentLevel * 50; // TODO mobiles??
+
+  const [renderChildren, setRenderChildren] = useState<boolean>(true);
+  const padding = indentLevel * 20; // TODO mobiles??
   /** toggles the reply form when reply clicked */
   function renderReply() {
     if (renderReplyForm) {
@@ -34,12 +36,19 @@ const Post = ({ post, threadID, loadThread, getPost, indentLevel }: Props) => {
     }
   }
 
+  /** Hides replies from the post which was clicked */
+  function hideReplies() {
+    setRenderChildren((current) => !current);
+    return;
+  }
+
   return (
     // card
     <>
       <div
         className="container my-3 border border-secondary rounded bg-dark"
         style={{ marginLeft: padding, width: "auto" }}
+        onClick={(e) => hideReplies()}
       >
         <div className="row p-2 d-flex justify-content-between">
           <h6 className="text-white ml-1">{post.username}</h6>
@@ -60,24 +69,25 @@ const Post = ({ post, threadID, loadThread, getPost, indentLevel }: Props) => {
         </div>
       </div>
       {renderReply()}
-      {post.childrenIDs.map(
-        (id) => {
-          const childPost = getPost(id);
-          if (childPost !== null) {
-            return (
-              <Post
-                key={id}
-                loadThread={loadThread}
-                post={childPost}
-                getPost={getPost}
-                threadID={threadID}
-                indentLevel={indentLevel + 1}
-              />
-            );
+      {renderChildren &&
+        post.childrenIDs.map(
+          (id) => {
+            const childPost = getPost(id);
+            if (childPost !== null) {
+              return (
+                <Post
+                  key={id}
+                  loadThread={loadThread}
+                  post={childPost}
+                  getPost={getPost}
+                  threadID={threadID}
+                  indentLevel={indentLevel + 1}
+                />
+              );
+            }
           }
-        }
-        // <Post key={id} loadThread={loadThread} post={} />
-      )}
+          // <Post key={id} loadThread={loadThread} post={} />
+        )}
     </>
   );
 };
