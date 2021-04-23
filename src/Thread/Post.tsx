@@ -1,6 +1,6 @@
 import { PostObj } from "./Thread";
 import AddPost from "./AddPost";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface Props {
   post: PostObj;
@@ -13,8 +13,11 @@ interface Props {
 const Post = ({ post, threadID, loadThread }: Props) => {
   // to find difference in date
   // const currentTime = new Date().getTime();
+
+  // determines if the reply form will be rendered
   const [renderReplyForm, setRenderReplyForm] = useState<Boolean>(false);
 
+  /** toggles the reply form when reply clicked */
   function renderReply() {
     if (renderReplyForm) {
       return (
@@ -22,6 +25,8 @@ const Post = ({ post, threadID, loadThread }: Props) => {
           threadID={threadID}
           loadThread={loadThread}
           noRenderButton={true}
+          parentPostID={post.id}
+          setRenderReplyForm={setRenderReplyForm}
         />
       );
     }
@@ -40,7 +45,6 @@ const Post = ({ post, threadID, loadThread }: Props) => {
         <div className="row pl-2">
           {<p className="text-white ml-1">{post.content}</p>}
         </div>
-
         <div
           onClick={(e) => setRenderReplyForm((prev) => !prev)}
           style={{ cursor: "pointer" }}

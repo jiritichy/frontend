@@ -8,16 +8,30 @@ interface Props {
 
   // if false, then don't render the add post button
   noRenderButton?: boolean;
+
+  // when in reply mode
+  parentPostID?: string;
+
+  // so we can remove the reply form component when post submitted
+  setRenderReplyForm?: React.Dispatch<React.SetStateAction<Boolean>>;
 }
 
-interface Post {
+interface PostRequest {
   username: string;
   content: string;
   date: string;
   threadID: string;
+  childrenIDs: string[]; // TODO maybe make server side
+  parentID?: string;
 }
 
-const AddPost = ({ threadID, loadThread, noRenderButton }: Props) => {
+const AddPost = ({
+  threadID,
+  loadThread,
+  noRenderButton,
+  parentPostID,
+  setRenderReplyForm,
+}: Props) => {
   const [addPostOn, setAddPostOn] = useState<boolean>(false);
   const server = process.env.REACT_APP_API_SERVER;
   const [content, setContent] = useState<string>("");
@@ -33,11 +47,13 @@ const AddPost = ({ threadID, loadThread, noRenderButton }: Props) => {
 
   /** Makes a post to the server */
   async function makePost() {
-    const post: Post = {
+    const post: PostRequest = {
       username: username, // username temp
       content: content,
       date: new Date().toLocaleString(),
       threadID: threadID,
+      childrenIDs: [],
+      parentID: parentPostID, // TODO if not reply, then parentID is ''
     };
 
     try {
@@ -53,6 +69,17 @@ const AddPost = ({ threadID, loadThread, noRenderButton }: Props) => {
       setAddPostOn((current) => !current);
     } catch (error) {
       // TODO error handling
+      return;
+    }
+
+    cancelHandler();
+  }
+
+  /** Closes the form. */
+  function cancelHandler() {
+    setAddPostOn(false);
+    if (setRenderReplyForm) {
+      setRenderReplyForm(false);
     }
   }
 
@@ -70,7 +97,7 @@ const AddPost = ({ threadID, loadThread, noRenderButton }: Props) => {
             Submit
           </button>
           <button
-            onClick={(e) => setAddPostOn(false)}
+            onClick={(e) => cancelHandler()}
             className="btn btn-primary mt-2"
           >
             Cancel

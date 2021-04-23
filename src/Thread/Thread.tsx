@@ -10,6 +10,9 @@ export interface PostObj {
   username: string;
   content: string;
   date: string; // TODO change
+  id: string;
+  childrenIDs: string[];
+  parentID: string;
 }
 
 export interface ThreadObject {
@@ -26,7 +29,6 @@ export interface ThreadObject {
 // TODO make new posts on thread
 // TODO if your own post / thread, you can delete
 const Thread = () => {
-  const [posts, setPosts] = useState([]);
   const defaultThread: ThreadObject = {
     title: "",
     content: "",
@@ -40,13 +42,24 @@ const Thread = () => {
   const server = process.env.REACT_APP_API_SERVER;
   const { id } = useParams<{ id: string }>();
   const hist = useHistory();
+  const [topLevelPosts, setTopLevelPosts] = useState<PostObj[]>([]);
 
+  /** Loads the thread. */
   async function loadThread() {
     const res = await fetch(server + "getThread/" + id);
     const jsoned = await res.json();
     setThread(jsoned);
+
+    // // get top level posts
+    setTopLevelPosts([]);
+    for (const post of jsoned.posts) {
+      if (post.parentID === null) {
+        setTopLevelPosts((current) => [...current, post]);
+      }
+    }
   }
 
+  /** Deletes the thread. */
   async function deleteThread() {
     // TODO are u sure
     const res = await fetch(server + "deleteThread/" + id);
@@ -71,9 +84,15 @@ const Thread = () => {
     }
   }
 
+  // TODO remove
+  function temp() {
+    return;
+  }
+
   // load all the posts for given thread
   useEffect(() => {
     loadThread();
+    // temp();
   }, []);
 
   // TODO if posts are empty, say no posts
@@ -83,6 +102,7 @@ const Thread = () => {
         <div className="col d-inline-flex align-items-center">
           <h1 className="mb-0">{thread.title}</h1>
           {renderOwnerActions()}
+          <button onClick={() => temp()}>adminbutton temp</button>
         </div>
       </div>
       <h6>- {thread.username}</h6>
@@ -90,7 +110,7 @@ const Thread = () => {
       <AddPost threadID={id} loadThread={loadThread} />
       <h4 className="mt-5">Replies:</h4>
 
-      {thread.posts.map((post, index) => (
+      {topLevelPosts.map((post, index) => (
         <Post key={index} post={post} threadID={id} loadThread={loadThread} />
       ))}
     </div>
