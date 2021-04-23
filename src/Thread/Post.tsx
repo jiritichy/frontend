@@ -48,7 +48,6 @@ const Post = ({ post, threadID, loadThread, getPost, indentLevel }: Props) => {
       <div
         className="container my-3 border border-secondary rounded bg-dark"
         style={{ marginLeft: padding, width: "auto" }}
-        onClick={(e) => hideReplies()}
       >
         <div className="row p-2 d-flex justify-content-between">
           <h6 className="text-white ml-1">{post.username}</h6>
@@ -59,13 +58,35 @@ const Post = ({ post, threadID, loadThread, getPost, indentLevel }: Props) => {
         <div className="row pl-2">
           {<p className="text-white ml-1">{post.content}</p>}
         </div>
-        <div
-          onClick={(e) => setRenderReplyForm((prev) => !prev)}
-          style={{ cursor: "pointer" }}
-        >
-          <h6 className="text-muted">
-            <small>Reply</small>
-          </h6>
+        <div className="row">
+          <div className="col d-flex">
+            <div>
+              <h6 className="text-muted">
+                <small
+                  style={{ cursor: "pointer" }}
+                  onClick={(e) => setRenderReplyForm((prev) => !prev)}
+                >
+                  Reply
+                </small>
+              </h6>
+            </div>
+            <div className={"ml-3"}>
+              <h6 className="text-muted">
+                {/* TODO change hide to show if needed */}
+                <small
+                  style={{ cursor: "pointer" }}
+                  onClick={(e) => hideReplies()}
+                >
+                  {!renderChildren &&
+                    post.childrenIDs.length > 0 &&
+                    "Show Replies"}
+                  {renderChildren &&
+                    post.childrenIDs.length > 0 &&
+                    "Hide Replies"}
+                </small>
+              </h6>
+            </div>
+          </div>
         </div>
       </div>
       {renderReply()}
