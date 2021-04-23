@@ -11,8 +11,8 @@ const NavBarProfile = () => {
 
   async function getUsername() {
     const sessionID = localStorage.getItem("sessionID");
-    console.log(location.pathname);
-    console.log();
+    // console.log(location.pathname);
+    // console.log();
     try {
       const result = await fetch(server + "getUsername/" + sessionID);
       const jsoned = await result.json();

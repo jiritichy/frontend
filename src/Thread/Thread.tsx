@@ -89,7 +89,7 @@ const Thread = () => {
     // console.log(postID);
     for (const post of thread.posts) {
       if (post.id === postID) {
-        console.log(post);
+        // console.log(post);
         return post;
       }
     }
