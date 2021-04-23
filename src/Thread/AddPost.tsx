@@ -89,18 +89,22 @@ const AddPost = ({
       <div className="form-group mt-4 mb-5">
         <label className="">Content</label>
         <textarea
+          placeholder="What are your thoughts?"
           onChange={(e) => setContent(e.target.value)}
           className="form-control border border-secondary"
         />
-        <div className="d-flex flex-row justify-content-between">
-          <button onClick={makePost} className="btn btn-primary mt-2">
-            Submit
-          </button>
+        <div className="d-flex flex-row justify-content-end">
           <button
             onClick={(e) => cancelHandler()}
             className="btn btn-primary mt-2"
           >
             Cancel
+          </button>
+          <button
+            onClick={makePost}
+            className="btn btn-primary mt-2 ml-3 bg-secondary text-dark border border-secondary"
+          >
+            Submit
           </button>
         </div>
       </div>
