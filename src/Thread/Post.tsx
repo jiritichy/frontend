@@ -37,7 +37,8 @@ const Post = ({ post, threadID, loadThread, getPost, indentLevel }: Props) => {
   }
 
   /** Hides replies from the post which was clicked */
-  function hideReplies() {
+  function toggleReplies() {
+    console.log(window.scrollY);
     setRenderChildren((current) => !current);
     return;
   }
@@ -45,51 +46,50 @@ const Post = ({ post, threadID, loadThread, getPost, indentLevel }: Props) => {
   return (
     // card
     <>
-      <div
-        className="container my-3 border border-secondary rounded bg-dark"
-        style={{ marginLeft: padding, width: "auto" }}
-      >
-        <div className="row p-2 d-flex justify-content-between">
-          <h6 className="text-white ml-1">{post.username}</h6>
-          <h6>
-            <small className="ml-3 text-muted">{post.date}</small>
-          </h6>
-        </div>
-        <div className="row pl-2">
-          {<p className="text-white ml-1">{post.content}</p>}
-        </div>
-        <div className="row">
-          <div className="col d-flex">
-            <div>
-              <h6 className="text-muted">
-                <small
-                  style={{ cursor: "pointer" }}
-                  onClick={(e) => setRenderReplyForm((prev) => !prev)}
-                >
-                  Reply
-                </small>
-              </h6>
-            </div>
-            <div className={"ml-3"}>
-              <h6 className="text-muted">
-                {/* TODO change hide to show if needed */}
-                <small
-                  style={{ cursor: "pointer" }}
-                  onClick={(e) => hideReplies()}
-                >
-                  {!renderChildren &&
-                    post.childrenIDs.length > 0 &&
-                    "Show Replies"}
-                  {renderChildren &&
-                    post.childrenIDs.length > 0 &&
-                    "Hide Replies"}
-                </small>
-              </h6>
+      <div style={{ marginLeft: padding, width: "auto" }}>
+        <div className="container my-3 border border-secondary rounded bg-dark">
+          <div className="row p-2 d-flex justify-content-between">
+            <h6 className="text-white ml-1">{post.username}</h6>
+            <h6>
+              <small className="ml-3 text-muted">{post.date}</small>
+            </h6>
+          </div>
+          <div className="row pl-2">
+            {<p className="text-white ml-1">{post.content}</p>}
+          </div>
+          <div className="row">
+            <div className="col d-flex">
+              <div>
+                <h6 className="text-muted">
+                  <small
+                    style={{ cursor: "pointer" }}
+                    onClick={(e) => setRenderReplyForm((prev) => !prev)}
+                  >
+                    Reply
+                  </small>
+                </h6>
+              </div>
+              <div className={"ml-3"}>
+                <h6 className="text-muted">
+                  {/* TODO change hide to show if needed */}
+                  <small
+                    style={{ cursor: "pointer" }}
+                    onClick={(e) => toggleReplies()}
+                  >
+                    {!renderChildren &&
+                      post.childrenIDs.length > 0 &&
+                      "Show Replies"}
+                    {renderChildren &&
+                      post.childrenIDs.length > 0 &&
+                      "Hide Replies"}
+                  </small>
+                </h6>
+              </div>
             </div>
           </div>
         </div>
+        {renderReply()}
       </div>
-      {renderReply()}
       {renderChildren &&
         post.childrenIDs.map(
           (id) => {
