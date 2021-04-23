@@ -46,6 +46,22 @@ const Post = ({ post, threadID, loadThread, getPost, indentLevel }: Props) => {
     return;
   }
 
+  /** Renders the image if necessary */
+  function renderImage(): JSX.Element | void {
+    if (post.imageURL !== "") {
+      return (
+        <img
+          className="img-fluid mb-2"
+          style={{ maxWidth: "400px" }}
+          src={post.imageURL}
+          alt=""
+        />
+      );
+    }
+
+    return;
+  }
+
   return (
     // card
     <>
@@ -60,6 +76,7 @@ const Post = ({ post, threadID, loadThread, getPost, indentLevel }: Props) => {
           <div className="row pl-2">
             {<p className="text-white ml-1">{post.content}</p>}
           </div>
+          {renderImage()}
           <div className="row">
             <div className="col d-flex">
               <div>

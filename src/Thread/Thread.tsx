@@ -13,6 +13,7 @@ export interface PostObj {
   id: string;
   childrenIDs: string[];
   parentID: string;
+  imageURL: string;
 }
 
 export interface ThreadObject {
@@ -122,7 +123,7 @@ const Thread = () => {
       <p>{thread.content}</p>
       <AddPost threadID={id} loadThread={loadThread} />
       <h4 className="mt-5">Replies:</h4>
-      <div className="container">
+      <div className="container ">
         {topLevelPosts.map((post, index) => (
           <Post
             key={index}

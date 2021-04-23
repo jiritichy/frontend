@@ -23,6 +23,7 @@ interface PostRequest {
   threadID: string;
   childrenIDs: string[]; // TODO maybe make server side
   parentID?: string;
+  imageURL: string;
 }
 
 const AddPost = ({
@@ -36,6 +37,7 @@ const AddPost = ({
   const server = process.env.REACT_APP_API_SERVER;
   const [content, setContent] = useState<string>("");
   const { username } = useContext(UserContext);
+  const [imageURL, setImageURL] = useState<string>("");
 
   useEffect(() => {
     if (noRenderButton === undefined) {
@@ -54,6 +56,7 @@ const AddPost = ({
       threadID: threadID,
       childrenIDs: [],
       parentID: parentPostID, // TODO if not reply, then parentID is ''
+      imageURL: imageURL,
     };
 
     try {
@@ -92,7 +95,16 @@ const AddPost = ({
           placeholder="What are your thoughts?"
           onChange={(e) => setContent(e.target.value)}
           className="form-control border border-secondary"
+          rows={6}
         />
+        <div className="mt-3">
+          <label>Image url</label>
+          <input
+            type="text"
+            onChange={(e) => setImageURL(e.target.value)}
+            className="form-control border border-secondary"
+          />
+        </div>
         <div className="d-flex flex-row justify-content-end">
           <button
             onClick={(e) => cancelHandler()}
