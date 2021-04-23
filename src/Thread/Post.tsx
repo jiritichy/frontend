@@ -20,7 +20,10 @@ const Post = ({ post, threadID, loadThread, getPost, indentLevel }: Props) => {
   const [renderReplyForm, setRenderReplyForm] = useState<Boolean>(false);
 
   const [renderChildren, setRenderChildren] = useState<boolean>(true);
-  const padding = indentLevel * 20; // TODO mobiles??
+
+  // how many pixels each indent level is
+  const padding = indentLevel * 20;
+
   /** toggles the reply form when reply clicked */
   function renderReply() {
     if (renderReplyForm) {
@@ -38,7 +41,7 @@ const Post = ({ post, threadID, loadThread, getPost, indentLevel }: Props) => {
 
   /** Hides replies from the post which was clicked */
   function toggleReplies() {
-    console.log(window.scrollY);
+    // console.log(window.scrollY);
     setRenderChildren((current) => !current);
     return;
   }
