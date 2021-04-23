@@ -84,10 +84,23 @@ const Thread = () => {
     }
   }
 
-  // TODO remove
-  function temp() {
-    return;
+  /** Gets a post by it's id */
+  function getPostByID(postID: string): PostObj | null {
+    // console.log(postID);
+    for (const post of thread.posts) {
+      if (post.id === postID) {
+        console.log(post);
+        return post;
+      }
+    }
+    return null;
   }
+
+  // TODO remove
+  // function temp() {
+  //   // getPostByID("3b51c4c3-0b88-4dac-aded-72a4d5c0d1c1");
+  //   return;
+  // }
 
   // load all the posts for given thread
   useEffect(() => {
@@ -102,17 +115,25 @@ const Thread = () => {
         <div className="col d-inline-flex align-items-center">
           <h1 className="mb-0">{thread.title}</h1>
           {renderOwnerActions()}
-          <button onClick={() => temp()}>adminbutton temp</button>
+          {/* <button onClick={() => temp()}>adminbutton temp</button> */}
         </div>
       </div>
       <h6>- {thread.username}</h6>
       <p>{thread.content}</p>
       <AddPost threadID={id} loadThread={loadThread} />
       <h4 className="mt-5">Replies:</h4>
-
-      {topLevelPosts.map((post, index) => (
-        <Post key={index} post={post} threadID={id} loadThread={loadThread} />
-      ))}
+      <div className="container">
+        {topLevelPosts.map((post, index) => (
+          <Post
+            key={index}
+            post={post}
+            threadID={id}
+            loadThread={loadThread}
+            getPost={getPostByID}
+            indentLevel={0}
+          />
+        ))}
+      </div>
     </div>
   );
 };

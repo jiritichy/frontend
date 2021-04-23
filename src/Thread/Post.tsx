@@ -6,17 +6,19 @@ interface Props {
   post: PostObj;
   threadID: string;
   loadThread: () => void;
+  getPost: (postID: string) => PostObj | null;
+  indentLevel: number;
 }
 
 // TODO format date properly
 
-const Post = ({ post, threadID, loadThread }: Props) => {
+const Post = ({ post, threadID, loadThread, getPost, indentLevel }: Props) => {
   // to find difference in date
   // const currentTime = new Date().getTime();
 
   // determines if the reply form will be rendered
   const [renderReplyForm, setRenderReplyForm] = useState<Boolean>(false);
-
+  const padding = indentLevel * 50; // TODO mobiles??
   /** toggles the reply form when reply clicked */
   function renderReply() {
     if (renderReplyForm) {
@@ -35,7 +37,10 @@ const Post = ({ post, threadID, loadThread }: Props) => {
   return (
     // card
     <>
-      <div className="container my-3 border border-secondary rounded bg-dark">
+      <div
+        className="container my-3 border border-secondary rounded bg-dark"
+        style={{ marginLeft: padding, width: "auto" }}
+      >
         <div className="row p-2 d-flex justify-content-between">
           <h6 className="text-white ml-1">{post.username}</h6>
           <h6>
@@ -55,6 +60,24 @@ const Post = ({ post, threadID, loadThread }: Props) => {
         </div>
       </div>
       {renderReply()}
+      {post.childrenIDs.map(
+        (id) => {
+          const childPost = getPost(id);
+          if (childPost !== null) {
+            return (
+              <Post
+                key={id}
+                loadThread={loadThread}
+                post={childPost}
+                getPost={getPost}
+                threadID={threadID}
+                indentLevel={indentLevel + 1}
+              />
+            );
+          }
+        }
+        // <Post key={id} loadThread={loadThread} post={} />
+      )}
     </>
   );
 };
