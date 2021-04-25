@@ -8,9 +8,21 @@
             "type": "pwa-chrome",
             "request": "launch",
             "userDataDir": false,
+            "smartStep": true,
             "name": "Launch Chrome against localhost",
-            "url": "http://localhost:8080",
-            "webRoot": "${workspaceFolder}"
+            "url": "http://localhost:3000",
+            "webRoot": "${workspaceFolder}",
+            "skipFiles": [
+                "<node_internals>/**",
+                "node_modules/",
+                "<node_internals>/**/*.js",
+                  "${workspaceFolder}/node_modules/**/*.js"
+            ],
+              "debug.javascript.terminalOptions": {
+                "skipFiles": [
+                  "<node_internals>/**"
+                ]
+            },
         }
     ]
 }
