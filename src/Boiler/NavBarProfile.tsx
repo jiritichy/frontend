@@ -11,8 +11,11 @@ const NavBarProfile = () => {
 
   async function getUsername() {
     const sessionID = localStorage.getItem("sessionID");
-    // console.log(location.pathname);
-    // console.log();
+
+    if (sessionID === undefined) {
+      return;
+    }
+
     try {
       const result = await fetch(server + "getUsername/" + sessionID);
       const jsoned = await result.json();
@@ -31,9 +34,19 @@ const NavBarProfile = () => {
     }
   }
 
+  // useEffect(() => {}, []);
+
   useEffect(() => {
+    // explicitly redirect to login for all non specified routes
+    if (location.pathname === "/") {
+      console.log("fixing");
+      localStorage.removeItem("sessionID");
+      history.push("/login");
+      setUsername("");
+      return;
+    }
     getUsername();
-  }, []);
+  }, [location.pathname]);
 
   /** Logs the user out. */
   function logout() {

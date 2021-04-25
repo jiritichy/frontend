@@ -48,12 +48,13 @@ const Login: React.FC = () => {
   }
 
   useEffect(() => {
-    // log user out if visit the page while logged in
-    if (usernameAlias) {
-      localStorage.removeItem("sessionID");
-      setUsernameAlias("");
-      setUsername("");
-    }
+    // console.log("render login page");
+    // // log user out if visit the page while logged in
+    // if (usernameAlias) {
+    //   localStorage.removeItem("sessionID");
+    //   setUsernameAlias("");
+    //   setUsername("");
+    // }
   }, []);
 
   return (
