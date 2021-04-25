@@ -51,8 +51,8 @@ const Post = ({ post, threadID, loadThread, getPost, indentLevel }: Props) => {
     if (post.imageURL !== "") {
       return (
         <img
-          className="img-fluid mb-2"
-          style={{ maxWidth: "400px" }}
+          className="mb-2"
+          style={{ maxWidth: "400px", width: "100%", height: "auto" }}
           src={post.imageURL}
           alt=""
         />
