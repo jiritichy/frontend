@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import { IconContext } from "react-icons";
 import { ImCross } from "react-icons/im";
 import { Link, useParams, useHistory } from "react-router-dom";
-import Post from "./Post";
+import Post from "./Post/Post";
 import AddPost from "./AddPost";
 import { UserContext } from "../Home/UserContext";
 

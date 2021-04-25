@@ -13,7 +13,7 @@ interface Props {
   parentPostID?: string;
 
   // so we can remove the reply form component when post submitted
-  setRenderReplyForm?: React.Dispatch<React.SetStateAction<Boolean>>;
+  setRenderReplyForm?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface PostRequest {
