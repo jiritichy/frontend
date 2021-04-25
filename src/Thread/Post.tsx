@@ -74,7 +74,15 @@ const Post = ({ post, threadID, loadThread, getPost, indentLevel }: Props) => {
             </h6>
           </div>
           <div className="row pl-2">
-            {<p className="text-white ml-1">{post.content}</p>}
+            {
+              <div className="text-white ml-1">
+                {post.deleted ? (
+                  <h6 className="text-danger">[Deleted]</h6>
+                ) : (
+                  post.content
+                )}
+              </div>
+            }
           </div>
           {renderImage()}
           <div className="row">
@@ -125,6 +133,7 @@ const Post = ({ post, threadID, loadThread, getPost, indentLevel }: Props) => {
                 />
               );
             }
+            return null;
           }
           // <Post key={id} loadThread={loadThread} post={} />
         )}
