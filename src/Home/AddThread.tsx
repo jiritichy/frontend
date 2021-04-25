@@ -2,7 +2,6 @@ import { useState, useContext } from "react";
 import { UserContext } from "./UserContext";
 
 interface Props {
-  threadID: string;
   loadThreads: () => void;
 }
 
@@ -12,7 +11,7 @@ interface NewThread {
   title: string;
 }
 
-const AddThread = ({ threadID, loadThreads }: Props) => {
+const AddThread = ({ loadThreads }: Props) => {
   const [addThreadOn, setAddThreadOn] = useState<boolean>(false);
   const server = process.env.REACT_APP_API_SERVER;
   const [content, setContent] = useState<string>("");
