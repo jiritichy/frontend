@@ -10,10 +10,20 @@ export interface PostObj {
   username: string;
   content: string;
   date: string; // TODO change
+
+  // post id
   id: string;
+
+  // array of all the ids for children posts
   childrenIDs: string[];
+
+  // the id of the parent post
   parentID: string;
+
   imageURL: string;
+
+  // if the post has been deleted
+  deleted?: boolean;
 }
 
 export interface ThreadObject {
