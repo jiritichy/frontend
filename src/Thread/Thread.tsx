@@ -24,10 +24,6 @@ export interface ThreadObject {
   posts: PostObj[];
 }
 
-// TODO on making thread, if no username, then anonymous
-// TODO logged in username displayed
-// TODO make new threads
-// TODO make new posts on thread
 // TODO if your own post / thread, you can delete
 const Thread = () => {
   const defaultThread: ThreadObject = {

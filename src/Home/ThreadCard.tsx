@@ -22,7 +22,7 @@ const ThreadCard = ({ thread }: Props) => {
     return content;
   }
 
-  // TODO limit post length
+  // TODO limit post length, client side and server side
   return (
     <Link to={`/thread/${id}`}>
       <div className="border border-primary rounded my-2 p-2">

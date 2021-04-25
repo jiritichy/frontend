@@ -30,7 +30,6 @@ const NavBarProfile = () => {
       setUsername(jsoned.username);
     } catch (error) {
       history.push("/login");
-      // TODO
     }
   }
 

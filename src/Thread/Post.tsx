@@ -91,7 +91,6 @@ const Post = ({ post, threadID, loadThread, getPost, indentLevel }: Props) => {
               </div>
               <div className={"ml-3"}>
                 <h6 className="text-muted">
-                  {/* TODO change hide to show if needed */}
                   <small
                     style={{ cursor: "pointer" }}
                     onClick={(e) => toggleReplies()}
