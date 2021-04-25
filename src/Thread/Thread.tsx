@@ -120,7 +120,7 @@ const Thread = () => {
         </div>
       </div>
       <h6>- {thread.username}</h6>
-      <p>{thread.content}</p>
+      <p style={{ wordWrap: "break-word" }}>{thread.content}</p>
       <AddPost threadID={id} loadThread={loadThread} />
       <h4 className="mt-5">Replies:</h4>
       <div className="container ">
