@@ -5,6 +5,7 @@ interface Props {
   renderChildren: boolean;
   setRenderReplyForm: React.Dispatch<React.SetStateAction<boolean>>;
   setRenderChildren: React.Dispatch<React.SetStateAction<boolean>>;
+  deletePost: () => void;
 }
 
 const PostFooter = ({
@@ -12,6 +13,7 @@ const PostFooter = ({
   renderChildren,
   setRenderReplyForm,
   setRenderChildren,
+  deletePost,
 }: Props) => {
   /** Hides replies from the post which was clicked */
   function toggleReplies() {
@@ -20,30 +22,60 @@ const PostFooter = ({
     return;
   }
 
+  /** the reply button */
+  function replyButton() {
+    return (
+      <div>
+        <h6 className="text-muted">
+          <small
+            style={{ cursor: "pointer" }}
+            onClick={(e) => setRenderReplyForm((prev) => !prev)}
+          >
+            Reply
+          </small>
+        </h6>
+      </div>
+    );
+  }
+
+  /** the show / hide reply button */
+  function showHideReplyButton() {
+    // dont render if no children
+    if (post.childrenIDs.length === 0) {
+      return null;
+    }
+
+    return (
+      <div className={"ml-3"}>
+        <h6 className="text-muted">
+          <small style={{ cursor: "pointer" }} onClick={(e) => toggleReplies()}>
+            {!renderChildren && "Show Replies"}
+            {renderChildren && "Hide Replies"}
+          </small>
+        </h6>
+      </div>
+    );
+  }
+
+  /** the delete post button */
+  function deletePostButton() {
+    return (
+      <div className={"ml-3"}>
+        <h6 className="text-muted">
+          <small style={{ cursor: "pointer" }} onClick={(e) => deletePost()}>
+            Delete Post
+          </small>
+        </h6>
+      </div>
+    );
+  }
+
   return (
     <div className="row">
       <div className="col d-flex">
-        <div>
-          <h6 className="text-muted">
-            <small
-              style={{ cursor: "pointer" }}
-              onClick={(e) => setRenderReplyForm((prev) => !prev)}
-            >
-              Reply
-            </small>
-          </h6>
-        </div>
-        <div className={"ml-3"}>
-          <h6 className="text-muted">
-            <small
-              style={{ cursor: "pointer" }}
-              onClick={(e) => toggleReplies()}
-            >
-              {!renderChildren && post.childrenIDs.length > 0 && "Show Replies"}
-              {renderChildren && post.childrenIDs.length > 0 && "Hide Replies"}
-            </small>
-          </h6>
-        </div>
+        {replyButton()}
+        {showHideReplyButton()}
+        {deletePostButton()}
       </div>
     </div>
   );

@@ -13,9 +13,13 @@ interface Props {
   indentLevel: number;
 }
 
+const server = process.env.REACT_APP_API_SERVER;
+
 // TODO format date properly
 
 const Post = ({ post, threadID, loadThread, getPost, indentLevel }: Props) => {
+  // TODO fix later
+  const [postNotProp, setPostNotProp] = useState(post);
   // to find difference in date
   // const currentTime = new Date().getTime();
 
@@ -36,10 +40,52 @@ const Post = ({ post, threadID, loadThread, getPost, indentLevel }: Props) => {
           threadID={threadID}
           loadThread={loadThread}
           noRenderButton={true}
-          parentPostID={post.id}
+          parentPostID={postNotProp.id}
           setRenderReplyForm={setRenderReplyForm}
         />
       );
+    }
+  }
+
+  /** Gets post */
+  async function retrievePost() {
+    const payload = { threadID: threadID, postID: postNotProp.id };
+
+    try {
+      const result = await fetch(server + "getPost", {
+        body: JSON.stringify(payload),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+      });
+      const response = await result.json();
+      console.log(response);
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  /** Deletes a post from the server */
+  async function deletePost() {
+    const payload = { threadID: threadID, postID: postNotProp.id };
+
+    try {
+      const result = await fetch(server + "deletePost", {
+        body: JSON.stringify(payload),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+      });
+      const response: Object = await result.json();
+      if (response.hasOwnProperty("status")) {
+        const updatedpost = await retrievePost();
+        setPostNotProp(updatedpost);
+      }
+    } catch (error) {
+      console.log(error);
     }
   }
 
@@ -48,19 +94,21 @@ const Post = ({ post, threadID, loadThread, getPost, indentLevel }: Props) => {
     <>
       <div style={{ marginLeft: padding, width: "auto" }}>
         <div className="container my-3 border border-secondary rounded bg-dark">
-          <PostHeader post={post} />
-          <PostBody post={post} />
+          <PostHeader post={postNotProp} />
+          <PostBody post={postNotProp} />
           <PostFooter
-            post={post}
+            post={postNotProp}
             renderChildren={renderChildren}
             setRenderReplyForm={setRenderReplyForm}
             setRenderChildren={setRenderChildren}
+            deletePost={deletePost}
           />
         </div>
         {renderReply()}
       </div>
+      {/* Recursively render children */}
       {renderChildren &&
-        post.childrenIDs.map((id) => {
+        postNotProp.childrenIDs.map((id) => {
           const childPost = getPost(id);
           if (childPost !== null) {
             return (
