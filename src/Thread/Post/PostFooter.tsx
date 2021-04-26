@@ -1,4 +1,6 @@
 import { PostObj } from "../Thread";
+import { UserContext } from "../../Home/UserContext";
+import { useContext } from "react";
 
 interface Props {
   post: PostObj;
@@ -15,6 +17,8 @@ const PostFooter = ({
   setRenderChildren,
   deletePost,
 }: Props) => {
+  const username = useContext(UserContext).username;
+
   /** Hides replies from the post which was clicked */
   function toggleReplies() {
     // console.log(window.scrollY);
@@ -61,6 +65,11 @@ const PostFooter = ({
   function deletePostButton() {
     // only render if post isn't already deleted
     if (post.deleted) {
+      return;
+    }
+
+    // only delete your own posts // TODO fix server side
+    if (post.username !== username) {
       return;
     }
 
