@@ -38,7 +38,6 @@ const NavBarProfile = () => {
   useEffect(() => {
     // explicitly redirect to login for all non specified routes
     if (location.pathname === "/") {
-      console.log("fixing");
       localStorage.removeItem("sessionID");
       history.push("/login");
       setUsername("");

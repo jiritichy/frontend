@@ -60,7 +60,6 @@ const Post = ({ post, threadID, loadThread, getPost, indentLevel }: Props) => {
         method: "POST",
       });
       const response = await result.json();
-      console.log(response);
       return response;
     } catch (error) {
       console.log(error);
