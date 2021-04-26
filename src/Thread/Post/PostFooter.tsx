@@ -59,6 +59,11 @@ const PostFooter = ({
 
   /** the delete post button */
   function deletePostButton() {
+    // only render if post isn't already deleted
+    if (post.deleted) {
+      return;
+    }
+
     return (
       <div className={"ml-3"}>
         <h6 className="text-muted">
