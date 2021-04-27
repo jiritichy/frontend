@@ -2,6 +2,8 @@
 
 The frontend for a forum / social media website built in an effort to learn full stack web development. 
 
+Visit [Forum Clone](http://domz.me/frontend) to see it in action
+
 ## Technologies
 * [ReactJS](https://reactjs.org/)
 * [TypeScript](https://www.typescriptlang.org/)
