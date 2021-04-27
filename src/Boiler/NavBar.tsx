@@ -12,7 +12,9 @@ const NavBar = () => {
   return (
     <div className="bg-dark navbar w-100 static-top">
       <Link to={allowedUrl}>
-        <h1 className="navbar-brand mx-3 text-light">TEMPORARYNAMEgay</h1>
+        <h1 className="navbar-brand mx-3 text-light">
+          Temporary name for social media website
+        </h1>
       </Link>
 
       <NavBarProfile />
