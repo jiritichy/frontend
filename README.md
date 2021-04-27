@@ -12,13 +12,13 @@ Visit [Forum Clone](http://domz.me/frontend) to see it in action
 * Reply to threads and posts
 
 ## Technologies
-* [ReactJS](https://reactjs.org/)
+* [ReactJS](https://reactjs.org/) - Frontend framework
 * [TypeScript](https://www.typescriptlang.org/)
-* [React Router](https://github.com/ReactTraining/react-router)
-* [React-icons](https://react-icons.github.io/react-icons)
+* [React Router](https://github.com/ReactTraining/react-router) - React routing
+* [React-icons](https://react-icons.github.io/react-icons) - Icons
+* [Bootswatch](https://bootswatch.com/) - CSS theme
+* [Bootstrap](https://getbootstrap.com/) - CSS framework
 * [Create React App](https://github.com/facebook/create-react-app)
-* [Bootswatch](https://bootswatch.com/)
-* [Bootstrap](https://getbootstrap.com/)
 
 ## To Do
 
