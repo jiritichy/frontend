@@ -4,6 +4,13 @@ The frontend for a forum / social media website built in an effort to learn full
 
 Visit [Forum Clone](http://domz.me/frontend) to see it in action
 
+## Features
+
+* Log in / Register 
+* Make threads
+* Make posts in threads
+* Reply to threads and posts
+
 ## Technologies
 * [ReactJS](https://reactjs.org/)
 * [TypeScript](https://www.typescriptlang.org/)
@@ -13,7 +20,7 @@ Visit [Forum Clone](http://domz.me/frontend) to see it in action
 * [Bootswatch](https://bootswatch.com/)
 * [Bootstrap](https://getbootstrap.com/)
 
-## TODO
+## To Do
 
 * Change password / username
 * Upvotes for threads and individual posts
