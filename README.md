@@ -8,6 +8,8 @@ The frontend for a forum / social media website built in an effort to learn full
 * [React Router](https://github.com/ReactTraining/react-router)
 * [React-icons](https://react-icons.github.io/react-icons)
 * [Create React App](https://github.com/facebook/create-react-app)
+* [Bootswatch](https://bootswatch.com/)
+* [Bootstrap](https://getbootstrap.com/)
 
 ## TODO
 
