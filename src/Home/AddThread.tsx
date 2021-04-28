@@ -11,6 +11,9 @@ interface NewThread {
   title: string;
 }
 
+const MAX_THREAD_TITLE_LENGTH = 150;
+const MAX_THREAD_CONTENT_LENGTH = 5000;
+
 const AddThread = ({ loadThreads }: Props) => {
   const [addThreadOn, setAddThreadOn] = useState<boolean>(false);
   const server = process.env.REACT_APP_API_SERVER;
@@ -18,8 +21,30 @@ const AddThread = ({ loadThreads }: Props) => {
   const [title, setTitle] = useState<string>("");
   const { username } = useContext(UserContext);
 
+  // the error message if needed
+  const [status, setStatus] = useState<string>("");
+
+  /** Checks if the thread is valid. */
+  function checkThreadValidity() {
+    if (content.length > MAX_THREAD_CONTENT_LENGTH) {
+      setStatus("Exceeded content length!");
+      return false;
+    }
+
+    if (title.length > MAX_THREAD_TITLE_LENGTH) {
+      setStatus("Exceeded title length!");
+      return false;
+    }
+
+    setStatus("");
+    return true;
+  }
+
   /** Makes a post to the server */
   async function makeThread() {
+    // error checking
+    if (!checkThreadValidity()) return;
+
     const thread: NewThread = {
       username: username,
       content: content,
@@ -42,6 +67,13 @@ const AddThread = ({ loadThreads }: Props) => {
     }
   }
 
+  /** The error message to be displayed. */
+  function errorMessage() {
+    if (status.length === 0) return;
+
+    return <h5 className="alert alert-danger mt-2">{status}</h5>;
+  }
+
   /** Renders the input form if needed */
   function inputForm() {
     if (addThreadOn) {
@@ -61,6 +93,7 @@ const AddThread = ({ loadThreads }: Props) => {
           <button onClick={makeThread} className="btn btn-primary mt-2">
             Submit
           </button>
+          {errorMessage()}
         </div>
       );
     }
