@@ -83,7 +83,7 @@ const Thread = () => {
         <IconContext.Provider value={{ size: "1em" }}>
           <ImCross
             onClick={deleteThread}
-            style={{ cursor: "pointer" }}
+            style={{ cursor: "pointer", minWidth: "15px" }}
             className="ml-2"
           />
         </IconContext.Provider>
