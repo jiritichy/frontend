@@ -15,13 +15,9 @@ interface Props {
 
 const server = process.env.REACT_APP_API_SERVER;
 
-// TODO format date properly
-
 const Post = ({ post, threadID, loadThread, getPost, indentLevel }: Props) => {
   // TODO fix later
   const [postNotProp, setPostNotProp] = useState(post);
-  // to find difference in date
-  // const currentTime = new Date().getTime();
 
   // determines if the reply form will be rendered
   const [renderReplyForm, setRenderReplyForm] = useState<boolean>(false);
