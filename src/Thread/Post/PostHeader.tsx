@@ -1,13 +1,18 @@
 import { PostObj } from "../Thread";
 import prettyMS from "pretty-ms";
-
+import { useState } from "react";
 interface Props {
   post: PostObj;
 }
 
 const PostHeader = ({ post }: Props) => {
-  // format date as how long ago
-  const timeSince = new Date().getTime() - parseInt(post.date);
+  const [timeSince, setTimeSince] = useState<number>(0);
+
+  // continuously update how long ago the post was made
+  setInterval(() => {
+    setTimeSince(new Date().getTime() - parseInt(post.date));
+  }, 1000);
+
   return (
     <div className="row p-2 d-flex justify-content-between">
       <h6 className="text-white ml-1">{post.username}</h6>
