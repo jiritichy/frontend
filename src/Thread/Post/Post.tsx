@@ -1,9 +1,11 @@
 import { PostObj } from "../Thread";
 import AddPost from "../AddPost";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import PostHeader from "./PostHeader";
 import PostFooter from "./PostFooter";
 import PostBody from "./PostBody";
+import PostVotes from "./PostVotes";
+import { UserContext } from "../../Home/UserContext";
 
 interface Props {
   post: PostObj;
@@ -16,6 +18,8 @@ interface Props {
 const server = process.env.REACT_APP_API_SERVER;
 
 const Post = ({ post, threadID, loadThread, getPost, indentLevel }: Props) => {
+  const username = useContext(UserContext).username;
+
   // TODO fix later
   const [postNotProp, setPostNotProp] = useState(post);
 
@@ -88,16 +92,19 @@ const Post = ({ post, threadID, loadThread, getPost, indentLevel }: Props) => {
     // card
     <>
       <div style={{ marginLeft: padding, width: "auto" }}>
-        <div className="container my-3 border border-secondary rounded bg-dark">
-          <PostHeader post={postNotProp} />
-          <PostBody post={postNotProp} />
-          <PostFooter
-            post={postNotProp}
-            renderChildren={renderChildren}
-            setRenderReplyForm={setRenderReplyForm}
-            setRenderChildren={setRenderChildren}
-            deletePost={deletePost}
-          />
+        <div className="my-3 d-flex border border-secondary rounded bg-dark">
+          <PostVotes postID={post.id} username={username} />
+          <div className="container" style={{ paddingLeft: "0" }}>
+            <PostHeader post={postNotProp} />
+            <PostBody post={postNotProp} />
+            <PostFooter
+              post={postNotProp}
+              renderChildren={renderChildren}
+              setRenderReplyForm={setRenderReplyForm}
+              setRenderChildren={setRenderChildren}
+              deletePost={deletePost}
+            />
+          </div>
         </div>
         {renderReply()}
       </div>
