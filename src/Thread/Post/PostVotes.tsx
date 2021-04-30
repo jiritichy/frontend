@@ -18,6 +18,11 @@ const PostVotes = ({ postID, username }: Props) => {
     getVotes();
   }, []);
 
+  // should ensure vote colours are loaded
+  useEffect(() => {
+    getVotes();
+  }, [username]);
+
   async function getVotes() {
     const resp = await fetch(server + "getPostVotes", {
       body: JSON.stringify({ postID: postID }),
