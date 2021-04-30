@@ -24,6 +24,8 @@ const PostVotes = ({ postID, username }: Props) => {
   }, [username]);
 
   async function getVotes() {
+    if (username === "") return;
+
     const resp = await fetch(server + "getPostVotes", {
       body: JSON.stringify({ postID: postID }),
       headers: {
