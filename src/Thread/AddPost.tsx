@@ -71,6 +71,8 @@ const AddPost = ({
       const response = await result.json();
       loadThread();
       setAddPostOn((current) => !current);
+      setContent("");
+      setImageURL("");
     } catch (error) {
       // TODO error handling
       return;
@@ -93,6 +95,7 @@ const AddPost = ({
       <div className="form-group mt-4 mb-5">
         <label className="">Content</label>
         <textarea
+          value={content}
           placeholder="What are your thoughts?"
           onChange={(e) => setContent(e.target.value)}
           className="form-control border border-secondary"
@@ -101,6 +104,7 @@ const AddPost = ({
         <div className="mt-3">
           <label>Image url</label>
           <input
+            value={imageURL}
             type="text"
             onChange={(e) => setImageURL(e.target.value)}
             className="form-control border border-secondary"
