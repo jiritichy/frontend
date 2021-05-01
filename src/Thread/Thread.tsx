@@ -103,16 +103,9 @@ const Thread = () => {
     return null;
   }
 
-  // TODO remove
-  // function temp() {
-  //   // getPostByID("3b51c4c3-0b88-4dac-aded-72a4d5c0d1c1");
-  //   return;
-  // }
-
   // load all the posts for given thread
   useEffect(() => {
     loadThread();
-    // temp();
   }, []);
 
   // TODO if posts are empty, say no posts
@@ -122,7 +115,6 @@ const Thread = () => {
         <div className="col d-inline-flex align-items-center">
           <h1 className="mb-0">{thread.title}</h1>
           {renderOwnerActions()}
-          {/* <button onClick={() => temp()}>adminbutton temp</button> */}
         </div>
       </div>
       <h6>- {thread.username}</h6>

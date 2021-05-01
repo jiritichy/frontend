@@ -48,13 +48,13 @@ const Post = ({
   const padding = indentLevel * 20;
 
   useEffect(() => {
-    const t = async () => {
+    const loadPost = async () => {
       // console.log("setpost");
       const r = await retrievePost(postID);
       setPostNotProp(r);
     };
 
-    t();
+    loadPost();
   }, []);
 
   /** toggles the reply form when reply clicked */
@@ -99,7 +99,7 @@ const Post = ({
     });
     const jsoned = await result2.json();
     // console.log(`post id: ${postID} is hidden: ${jsoned.status}`);
-    setRenderChildren(!jsoned.status);
+    setRenderChildren(jsoned.status);
 
     // console.log(response);
     return response;
