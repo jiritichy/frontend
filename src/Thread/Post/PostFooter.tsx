@@ -34,14 +34,14 @@ const PostFooter = ({
       method: "POST",
     });
     const jsoned = await resp.json();
-    console.log(jsoned);
+    // console.log(jsoned);
   }
 
   /** Hides replies from the post which was clicked */
   function toggleReplies() {
     setRenderChildren((current) => !current);
     hidePostServerSide();
-    console.log(username);
+    // console.log(username);
     return;
   }
 

@@ -45,7 +45,7 @@ const PostVotes = ({ postID, username }: Props) => {
       method: "POST",
     });
     const jsonedvote = await usersVote.json();
-    console.log(`set user vote to ${jsonedvote.vote}`);
+    // console.log(`set user vote to ${jsonedvote.vote}`);
     setUserVote(jsonedvote.vote);
   }
 

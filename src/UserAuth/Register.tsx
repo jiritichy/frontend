@@ -60,7 +60,7 @@ const Register = () => {
       history.push("/login");
 
       // TODO if it fails??
-      console.log(response);
+      // console.log(response);
     } catch (err) {
       console.log(err);
     }

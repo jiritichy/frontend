@@ -49,7 +49,7 @@ const Post = ({
 
   useEffect(() => {
     const t = async () => {
-      console.log("setpost");
+      // console.log("setpost");
       const r = await retrievePost(postID);
       setPostNotProp(r);
     };
@@ -98,7 +98,7 @@ const Post = ({
       method: "POST",
     });
     const jsoned = await result2.json();
-    console.log(`post id: ${postID} is hidden: ${jsoned.status}`);
+    // console.log(`post id: ${postID} is hidden: ${jsoned.status}`);
     setRenderChildren(!jsoned.status);
 
     // console.log(response);

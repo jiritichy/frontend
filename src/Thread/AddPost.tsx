@@ -49,7 +49,7 @@ const AddPost = ({
 
   /** Makes a post to the server */
   async function makePost() {
-    console.log(new Date().getTime().toString());
+    // console.log(new Date().getTime().toString());
     const post: PostRequest = {
       username: username, // username temp
       content: content,
