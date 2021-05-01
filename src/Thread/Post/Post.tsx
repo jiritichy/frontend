@@ -8,7 +8,7 @@ import PostVotes from "./PostVotes";
 import { UserContext } from "../../Home/UserContext";
 
 interface Props {
-  post: PostObj;
+  postID: string;
   threadID: string;
   loadThread: () => void;
   getPost: (postID: string) => PostObj | null;
@@ -17,11 +17,26 @@ interface Props {
 
 const server = process.env.REACT_APP_API_SERVER;
 
-const Post = ({ post, threadID, loadThread, getPost, indentLevel }: Props) => {
+const Post = ({
+  postID,
+  threadID,
+  loadThread,
+  getPost,
+  indentLevel,
+}: Props) => {
+  const defaultPost: PostObj = {
+    childrenIDs: [],
+    content: "loading...",
+    date: "1",
+    id: "",
+    imageURL: "",
+    parentID: "",
+    username: "loading...",
+  };
   const username = useContext(UserContext).username;
 
   // TODO fix later
-  const [postNotProp, setPostNotProp] = useState(post);
+  const [postNotProp, setPostNotProp] = useState<PostObj>(defaultPost);
 
   // determines if the reply form will be rendered
   const [renderReplyForm, setRenderReplyForm] = useState<boolean>(false);
@@ -31,6 +46,16 @@ const Post = ({ post, threadID, loadThread, getPost, indentLevel }: Props) => {
 
   // how many pixels each indent level is
   const padding = indentLevel * 20;
+
+  useEffect(() => {
+    const t = async () => {
+      console.log("setpost");
+      const r = await retrievePost(postID);
+      setPostNotProp(r);
+    };
+
+    t();
+  }, []);
 
   /** toggles the reply form when reply clicked */
   function renderReply() {
@@ -48,27 +73,41 @@ const Post = ({ post, threadID, loadThread, getPost, indentLevel }: Props) => {
   }
 
   /** Gets post */
-  async function retrievePost() {
-    const payload = { threadID: threadID, postID: postNotProp.id };
+  async function retrievePost(postID: string) {
+    const payload = { threadID: threadID, postID: postID };
 
-    try {
-      const result = await fetch(server + "getPost", {
-        body: JSON.stringify(payload),
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: "POST",
-      });
-      const response = await result.json();
-      return response;
-    } catch (error) {
-      console.log(error);
-    }
+    const result = await fetch(server + "getPost", {
+      body: JSON.stringify(payload),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+    });
+    const response: PostObj = await result.json();
+    // return response;
+
+    // get hidden state.
+    const result2 = await fetch(server + "isPostHidden", {
+      body: JSON.stringify({
+        username: username,
+        postID: postID,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+    });
+    const jsoned = await result2.json();
+    console.log(`post id: ${postID} is hidden: ${jsoned.status}`);
+    setRenderChildren(!jsoned.status);
+
+    // console.log(response);
+    return response;
   }
 
   /** Deletes a post from the server */
   async function deletePost() {
-    const payload = { threadID: threadID, postID: postNotProp.id };
+    const payload = { threadID: threadID, postID: postID };
 
     try {
       const result = await fetch(server + "deletePost", {
@@ -80,7 +119,7 @@ const Post = ({ post, threadID, loadThread, getPost, indentLevel }: Props) => {
       });
       const response: Object = await result.json();
       if (response.hasOwnProperty("status")) {
-        const updatedpost = await retrievePost();
+        const updatedpost = await retrievePost(postID);
         setPostNotProp(updatedpost);
       }
     } catch (error) {
@@ -93,7 +132,7 @@ const Post = ({ post, threadID, loadThread, getPost, indentLevel }: Props) => {
     <>
       <div style={{ marginLeft: padding, width: "auto" }}>
         <div className="my-3 d-flex border border-secondary rounded bg-dark">
-          <PostVotes postID={post.id} username={username} />
+          <PostVotes postID={postID} username={username} />
           <div className="container" style={{ paddingLeft: "0" }}>
             <PostHeader post={postNotProp} />
             <PostBody post={postNotProp} />
@@ -117,7 +156,7 @@ const Post = ({ post, threadID, loadThread, getPost, indentLevel }: Props) => {
               <Post
                 key={id}
                 loadThread={loadThread}
-                post={childPost}
+                postID={childPost.id}
                 getPost={getPost}
                 threadID={threadID}
                 indentLevel={indentLevel + 1}

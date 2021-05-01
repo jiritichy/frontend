@@ -133,7 +133,7 @@ const Thread = () => {
         {topLevelPosts.map((post, index) => (
           <Post
             key={index}
-            post={post}
+            postID={post.id}
             threadID={id}
             loadThread={loadThread}
             getPost={getPostByID}

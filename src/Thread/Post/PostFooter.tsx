@@ -18,11 +18,30 @@ const PostFooter = ({
   deletePost,
 }: Props) => {
   const username = useContext(UserContext).username;
+  const server = process.env.REACT_APP_API_SERVER;
+
+  /** Hides the post for the user. */
+  async function hidePostServerSide() {
+    const resp = await fetch(server + "hidePost", {
+      body: JSON.stringify({
+        username: username,
+        postID: post.id,
+        hidden: renderChildren,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+    });
+    const jsoned = await resp.json();
+    console.log(jsoned);
+  }
 
   /** Hides replies from the post which was clicked */
   function toggleReplies() {
-    // console.log(window.scrollY);
     setRenderChildren((current) => !current);
+    hidePostServerSide();
+    console.log(username);
     return;
   }
 
