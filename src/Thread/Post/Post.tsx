@@ -99,7 +99,7 @@ const Post = ({
     });
     const jsoned = await result2.json();
     // console.log(`post id: ${postID} is hidden: ${jsoned.status}`);
-    setRenderChildren(jsoned.status);
+    setRenderChildren(!jsoned.status);
 
     // console.log(response);
     return response;
