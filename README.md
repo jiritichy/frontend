@@ -23,13 +23,14 @@ Visit [Forum Clone](http://domz.me/frontend) to see it in action
 ## To Do
 
 * Change password / username
-* Upvotes for threads and individual posts
-  * Sort threads / posts by upvotes
-* Fix post dates (only saves local time currently)
-  * Make the date say posted how long ago
+* Upvotes for threads and individual posts - posts done
+  * Sort threads / posts by upvotes 
+* Fix post dates (only saves local time currently) - DONE
+  * Make the date say posted how long ago - DONE
 * Communities
   * Each community has threads
 * Search for dates
+
 
 
 

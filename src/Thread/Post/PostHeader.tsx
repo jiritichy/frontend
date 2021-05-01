@@ -10,14 +10,16 @@ const PostHeader = ({ post }: Props) => {
 
   useEffect(() => {
     let timer = setInterval(() => {
-      setTimeSince(new Date().getTime() - parseInt(post.date));
-    }, 1000);
+      const time = new Date().getTime() - parseInt(post.date);
+
+      setTimeSince(time);
+    }, 100);
 
     // cleanup
     return () => {
       clearTimeout(timer);
     };
-  }, []);
+  }, [post.date]);
   // continuously update how long ago the post was made
 
   return (
