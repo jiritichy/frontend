@@ -28,7 +28,7 @@ const PostBody = ({ post }: Props) => {
           {post.deleted ? (
             <h6 className="text-danger">[Deleted]</h6>
           ) : (
-            post.content
+            <p style={{ wordBreak: "break-word" }}>{post.content}</p>
           )}
         </div>
       </div>
