@@ -29,7 +29,8 @@ Visit [Forum Clone](http://domz.me/frontend) to see it in action
   * Make the date say posted how long ago - DONE
 * Communities
   * Each community has threads
-* Search for dates
+* Search for posts
+* Profile thumbnails
 
 
 
