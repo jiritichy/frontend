@@ -6,6 +6,9 @@ import Post from "./Post/Post";
 import AddPost from "./AddPost";
 import { UserContext } from "../Home/UserContext";
 
+import io from "socket.io-client";
+const SOCKET_SERVER: any = process.env.REACT_APP_SOCKET_SERVER;
+const socket = io(SOCKET_SERVER);
 export interface PostObj {
   username: string;
   content: string;
@@ -46,22 +49,26 @@ const Thread = () => {
 
   const { username, setUsername } = useContext(UserContext);
   const [thread, setThread] = useState<ThreadObject>(defaultThread);
+
   const server = process.env.REACT_APP_API_SERVER;
   const { id } = useParams<{ id: string }>();
   const hist = useHistory();
   const [topLevelPosts, setTopLevelPosts] = useState<PostObj[]>([]);
+  const [newPostObj, setNewPostObj] = useState<PostObj | null>(null);
 
   /** Loads the thread. */
   async function loadThread() {
     const res = await fetch(server + "getThread/" + id);
     const jsoned = await res.json();
-    setThread(jsoned);
-
-    // // get top level posts
-    setTopLevelPosts([]);
-    for (const post of jsoned.posts) {
-      if (post.parentID === null) {
-        setTopLevelPosts((current) => [...current, post]);
+    console.log(jsoned);
+    if (JSON.stringify(jsoned) !== JSON.stringify(thread)) {
+      setThread(jsoned);
+      // // get top level posts
+      setTopLevelPosts([]);
+      for (const post of jsoned.posts) {
+        if (post.parentID === null) {
+          setTopLevelPosts((current) => [...current, post]);
+        }
       }
     }
   }
@@ -106,7 +113,34 @@ const Thread = () => {
   // load all the posts for given thread
   useEffect(() => {
     loadThread();
+    // temp socket io
+    socket.connect();
+    socket.emit("onThread", id);
+    console.log("SHOULD CONNECT NOW");
+
+    socket.on("newPost", (newPost: PostObj) => {
+      console.log("server says an update was made");
+      console.log(newPost);
+
+      // store new post somewhere
+
+      // is top level
+      if (newPost.parentID === null) {
+        console.log("new top level post");
+        setTopLevelPosts((current) => [...current, newPost]);
+        // TODO https://dev.to/otamnitram/react-useeffect-cleanup-how-and-when-to-use-it-2hbm
+      } else {
+        setNewPostObj(newPost);
+      }
+    });
+
+    // cleanup
+    return () => {
+      socket.disconnect();
+    };
   }, []);
+
+  // useEffect(() => {}, [thread]);
 
   // TODO if posts are empty, say no posts
   return (
@@ -130,6 +164,7 @@ const Thread = () => {
             loadThread={loadThread}
             getPost={getPostByID}
             indentLevel={0}
+            newPost={newPostObj}
           />
         ))}
       </div>

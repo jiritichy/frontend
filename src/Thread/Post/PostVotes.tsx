@@ -14,14 +14,14 @@ const PostVotes = ({ postID, username }: Props) => {
   let upColor = "";
   let downColor = "";
 
-  useEffect(() => {
-    getVotes();
-  }, []);
+  // useEffect(() => {
+  //   getVotes();
+  // }, []);
 
   // should ensure vote colours are loaded
   useEffect(() => {
     getVotes();
-  }, [username]);
+  }, [votes]);
 
   async function getVotes() {
     if (username === "") return;

@@ -13,6 +13,7 @@ interface Props {
   loadThread: () => void;
   getPost: (postID: string) => PostObj | null;
   indentLevel: number;
+  newPost: PostObj | null;
 }
 
 const server = process.env.REACT_APP_API_SERVER;
@@ -23,6 +24,7 @@ const Post = ({
   loadThread,
   getPost,
   indentLevel,
+  newPost,
 }: Props) => {
   const defaultPost: PostObj = {
     childrenIDs: [],
@@ -38,11 +40,13 @@ const Post = ({
   // TODO fix later
   const [postNotProp, setPostNotProp] = useState<PostObj>(defaultPost);
 
+  const [childrenPosts, setChildrenPosts] = useState<string[]>([]);
   // determines if the reply form will be rendered
   const [renderReplyForm, setRenderReplyForm] = useState<boolean>(false);
 
   // determines if children are rendered
   const [renderChildren, setRenderChildren] = useState<boolean>(true);
+  const [newPostObj, setNewPostObj] = useState<PostObj | null>(newPost);
 
   // how many pixels each indent level is
   const padding = indentLevel * 20;
@@ -52,10 +56,25 @@ const Post = ({
       // console.log("setpost");
       const r = await retrievePost(postID);
       setPostNotProp(r);
+      setChildrenPosts(r.childrenIDs);
     };
 
     loadPost();
   }, []);
+
+  useEffect(() => {
+    if (newPost === null) {
+      return;
+    }
+
+    if (newPost.parentID === postID) {
+      setChildrenPosts((current) => [...current, newPost.id]);
+      setNewPostObj(null);
+      return;
+    }
+
+    setNewPostObj(newPost);
+  }, [newPost]);
 
   /** toggles the reply form when reply clicked */
   function renderReply() {
@@ -149,17 +168,18 @@ const Post = ({
       </div>
       {/* Recursively render children */}
       {renderChildren &&
-        postNotProp.childrenIDs.map((id) => {
-          const childPost = getPost(id);
-          if (childPost !== null) {
+        childrenPosts.map((id) => {
+          // console.log(childrenPosts.length);
+          if (id !== null) {
             return (
               <Post
                 key={id}
                 loadThread={loadThread}
-                postID={childPost.id}
+                postID={id}
                 getPost={getPost}
                 threadID={threadID}
                 indentLevel={indentLevel + 1}
+                newPost={newPostObj}
               />
             );
           }
