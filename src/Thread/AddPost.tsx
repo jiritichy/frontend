@@ -69,7 +69,7 @@ const AddPost = ({
         method: "POST",
       });
       const response = await result.json();
-      loadThread();
+      // loadThread();
       setAddPostOn((current) => !current);
       setContent("");
       setImageURL("");
