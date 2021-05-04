@@ -25,11 +25,11 @@ function App() {
           <Route path="/login">
             <Login />
           </Route>
-          <PostContext.Provider value={{ postToReload, setPostToReload }}>
-            <Route path="/thread/:id">
+          <Route path="/thread/:id">
+            <PostContext.Provider value={{ postToReload, setPostToReload }}>
               <Thread />
-            </Route>
-          </PostContext.Provider>
+            </PostContext.Provider>
+          </Route>
           <Route path="/home">
             <Home />
           </Route>
