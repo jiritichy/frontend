@@ -13,8 +13,6 @@ const PostVotes = ({ postID, username }: Props) => {
   const server = process.env.REACT_APP_API_SERVER;
   const [userVote, setUserVote] = useState<number>(0);
   const { postToReload, setPostToReload } = useContext(PostContext);
-  let upColor = "";
-  let downColor = "";
 
   useEffect(() => {
     if (postToReload === postID) {
@@ -24,10 +22,10 @@ const PostVotes = ({ postID, username }: Props) => {
     }
   }, [postToReload]);
 
-  // should ensure vote colours are loaded
+  // get all votes on startup
   useEffect(() => {
     getVotes();
-  }, [votes]);
+  }, []);
 
   async function getVotes() {
     if (username === "") return;
@@ -51,14 +49,11 @@ const PostVotes = ({ postID, username }: Props) => {
       method: "POST",
     });
     const jsonedvote = await usersVote.json();
-    // console.log(`set user vote to ${jsonedvote.vote}`);
     setUserVote(jsonedvote.vote);
   }
 
   /** Upvotes or downvotes post */
   async function vote(vote: string) {
-    // TODO reload post after vote
-
     const payload = {
       postID: postID,
       vote: vote,
@@ -72,8 +67,6 @@ const PostVotes = ({ postID, username }: Props) => {
       },
       method: "POST",
     });
-
-    getVotes();
   }
 
   // TODO change hardcoded votes
