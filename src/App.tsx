@@ -8,9 +8,11 @@ import { useState } from "react";
 import { HashRouter as Router, Switch, Route, Link } from "react-router-dom";
 import "./App.css";
 import { UserContext } from "./Home/UserContext";
+import { PostContext } from "./Home/PostContext";
 
 function App() {
   const [username, setUsername] = useState("");
+  const [postToReload, setPostToReload] = useState<string | null>(null);
 
   return (
     <Router basename="/">
@@ -23,9 +25,11 @@ function App() {
           <Route path="/login">
             <Login />
           </Route>
-          <Route path="/thread/:id">
-            <Thread />
-          </Route>
+          <PostContext.Provider value={{ postToReload, setPostToReload }}>
+            <Route path="/thread/:id">
+              <Thread />
+            </Route>
+          </PostContext.Provider>
           <Route path="/home">
             <Home />
           </Route>

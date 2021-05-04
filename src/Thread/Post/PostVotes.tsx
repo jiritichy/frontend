@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { IconContext } from "react-icons";
 import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
+import { PostContext } from "../../Home/PostContext";
 
 interface Props {
   postID: string;
@@ -11,12 +12,17 @@ const PostVotes = ({ postID, username }: Props) => {
   const [votes, setVotes] = useState<number>(0);
   const server = process.env.REACT_APP_API_SERVER;
   const [userVote, setUserVote] = useState<number>(0);
+  const { postToReload, setPostToReload } = useContext(PostContext);
   let upColor = "";
   let downColor = "";
 
-  // useEffect(() => {
-  //   getVotes();
-  // }, []);
+  useEffect(() => {
+    if (postToReload === postID) {
+      // reload post
+      getVotes();
+      setPostToReload(null);
+    }
+  }, [postToReload]);
 
   // should ensure vote colours are loaded
   useEffect(() => {

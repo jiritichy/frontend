@@ -7,6 +7,7 @@ import AddPost from "./AddPost";
 import { UserContext } from "../Home/UserContext";
 
 import io from "socket.io-client";
+import { PostContext } from "../Home/PostContext";
 const SOCKET_SERVER: any = process.env.REACT_APP_SOCKET_SERVER;
 const socket = io(SOCKET_SERVER);
 export interface PostObj {
@@ -55,6 +56,7 @@ const Thread = () => {
   const hist = useHistory();
   const [topLevelPosts, setTopLevelPosts] = useState<PostObj[]>([]);
   const [newPostObj, setNewPostObj] = useState<PostObj | null>(null);
+  const { postToReload, setPostToReload } = useContext(PostContext);
 
   /** Loads the thread. */
   async function loadThread() {
@@ -126,6 +128,10 @@ const Thread = () => {
       } else {
         setNewPostObj(newPost);
       }
+    });
+    socket.on("upvotePost", (postID) => {
+      // post had its votes changed, reload
+      setPostToReload(postID);
     });
 
     // cleanup
