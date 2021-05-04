@@ -19,7 +19,7 @@ Visit [Forum Clone](http://domz.me/frontend) to see it in action
 * [Bootswatch](https://bootswatch.com/) - CSS theme
 * [Bootstrap](https://getbootstrap.com/) - CSS framework
 * [Create React App](https://github.com/facebook/create-react-app)
-
+* [Socket.IO](https://socket.io/) - Websockets to push data out live
 ## To Do
 
 * Change password / username
@@ -31,6 +31,7 @@ Visit [Forum Clone](http://domz.me/frontend) to see it in action
   * Each community has threads
 * Search for posts
 * Profile thumbnails
+* auto load new posts intermittently - DONE (other post functions still todo)
 
 
 
