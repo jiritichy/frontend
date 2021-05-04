@@ -56,7 +56,8 @@ const Thread = () => {
   const hist = useHistory();
   const [topLevelPosts, setTopLevelPosts] = useState<PostObj[]>([]);
   const [newPostObj, setNewPostObj] = useState<PostObj | null>(null);
-  const { postToReload, setPostToReload } = useContext(PostContext);
+  const [postToReload, setPostToReload] = useContext(PostContext).voteReload;
+  const [deletedPost, setDeletedPost] = useContext(PostContext).deleteReload;
 
   /** Loads the thread. */
   async function loadThread() {
@@ -129,9 +130,13 @@ const Thread = () => {
         setNewPostObj(newPost);
       }
     });
+    // post had its votes changed, reload
     socket.on("upvotePost", (postID) => {
-      // post had its votes changed, reload
       setPostToReload(postID);
+    });
+    // post deletion
+    socket.on("postDeleted", (postID) => {
+      setDeletedPost(postID);
     });
 
     // cleanup

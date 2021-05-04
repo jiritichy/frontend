@@ -12,7 +12,8 @@ const PostVotes = ({ postID, username }: Props) => {
   const [votes, setVotes] = useState<number>(0);
   const server = process.env.REACT_APP_API_SERVER;
   const [userVote, setUserVote] = useState<number>(0);
-  const { postToReload, setPostToReload } = useContext(PostContext);
+  const voteReload = useContext(PostContext).voteReload;
+  const [postToReload, setPostToReload] = voteReload;
 
   useEffect(() => {
     if (postToReload === postID) {
@@ -25,7 +26,7 @@ const PostVotes = ({ postID, username }: Props) => {
   // get all votes on startup
   useEffect(() => {
     getVotes();
-  }, []);
+  }, [username]);
 
   async function getVotes() {
     if (username === "") return;

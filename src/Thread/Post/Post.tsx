@@ -6,6 +6,7 @@ import PostFooter from "./PostFooter";
 import PostBody from "./PostBody";
 import PostVotes from "./PostVotes";
 import { UserContext } from "../../Home/UserContext";
+import { PostContext } from "../../Home/PostContext";
 
 interface Props {
   postID: string;
@@ -48,6 +49,8 @@ const Post = ({
   const [renderChildren, setRenderChildren] = useState<boolean>(true);
   const [newPostObj, setNewPostObj] = useState<PostObj | null>(newPost);
 
+  const [deletedPost, setDeletedPost] = useContext(PostContext).deleteReload;
+
   // how many pixels each indent level is
   const padding = indentLevel * 20;
 
@@ -61,6 +64,15 @@ const Post = ({
 
     loadPost();
   }, []);
+
+  useEffect(() => {
+    if (deletedPost === postID) {
+      const updatedPost = postNotProp;
+      updatedPost.deleted = true;
+      setPostNotProp(updatedPost);
+      setDeletedPost(null);
+    }
+  }, [deletedPost]);
 
   useEffect(() => {
     if (newPost === null) {

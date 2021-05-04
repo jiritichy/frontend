@@ -13,6 +13,7 @@ import { PostContext } from "./Home/PostContext";
 function App() {
   const [username, setUsername] = useState("");
   const [postToReload, setPostToReload] = useState<string | null>(null);
+  const [deletedPost, setDeletedPost] = useState<string | null>(null);
 
   return (
     <Router basename="/">
@@ -26,7 +27,12 @@ function App() {
             <Login />
           </Route>
           <Route path="/thread/:id">
-            <PostContext.Provider value={{ postToReload, setPostToReload }}>
+            <PostContext.Provider
+              value={{
+                voteReload: [postToReload, setPostToReload],
+                deleteReload: [deletedPost, setDeletedPost],
+              }}
+            >
               <Thread />
             </PostContext.Provider>
           </Route>
