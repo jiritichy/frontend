@@ -60,7 +60,6 @@ const Thread = () => {
   async function loadThread() {
     const res = await fetch(server + "getThread/" + id);
     const jsoned = await res.json();
-    console.log(jsoned);
     if (JSON.stringify(jsoned) !== JSON.stringify(thread)) {
       setThread(jsoned);
       // // get top level posts
@@ -116,12 +115,7 @@ const Thread = () => {
     // temp socket io
     socket.connect();
     socket.emit("onThread", id);
-    console.log("SHOULD CONNECT NOW");
-
     socket.on("newPost", (newPost: PostObj) => {
-      console.log("server says an update was made");
-      console.log(newPost);
-
       // store new post somewhere
 
       // is top level
