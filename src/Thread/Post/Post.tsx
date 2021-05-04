@@ -69,6 +69,11 @@ const Post = ({
 
     if (newPost.parentID === postID) {
       setChildrenPosts((current) => [...current, newPost.id]);
+
+      let updatedPost: PostObj = postNotProp;
+      updatedPost.childrenIDs = [...postNotProp.childrenIDs, newPost.id];
+
+      setPostNotProp(updatedPost);
       setNewPostObj(null);
       return;
     }
