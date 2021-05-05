@@ -16,11 +16,18 @@ const PostVotes = ({ postID, username }: Props) => {
   const [postToReload, setPostToReload] = voteReload;
 
   useEffect(() => {
-    if (postToReload === postID) {
-      // reload post
-      getVotes();
-      setPostToReload(null);
+    let mounted = true;
+    if (mounted) {
+      if (postToReload === postID) {
+        // reload post
+        getVotes();
+        setPostToReload(null);
+      }
     }
+
+    return () => {
+      mounted = false;
+    };
   }, [postToReload]);
 
   // get all votes on startup
@@ -61,7 +68,7 @@ const PostVotes = ({ postID, username }: Props) => {
       username: username,
     };
 
-    const resp = await fetch(server + "upvotePost", {
+    fetch(server + "upvotePost", {
       body: JSON.stringify(payload),
       headers: {
         "Content-Type": "application/json",
