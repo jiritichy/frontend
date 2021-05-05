@@ -55,14 +55,20 @@ const Post = ({
   const padding = indentLevel * 20;
 
   useEffect(() => {
+    let mounted = true;
     const loadPost = async () => {
-      // console.log("setpost");
       const r = await retrievePost(postID);
-      setPostNotProp(r);
-      setChildrenPosts(r.childrenIDs);
+      if (mounted) {
+        setPostNotProp(r);
+        setChildrenPosts(r.childrenIDs);
+      }
     };
 
     loadPost();
+
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   useEffect(() => {
