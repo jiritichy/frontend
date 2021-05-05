@@ -34,7 +34,7 @@ Visit [Forum Clone](http://domz.me/frontend) to see it in action
   * Change password / username
   * View all your upvoted threads / posts (profile page?)
 
-#### Done
+### Done
 * ~~Upvotes for posts~~
 * ~~Auto load new posts intermittently~~
 * ~~Fix post dates (only saves local time currently)~~
