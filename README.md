@@ -10,6 +10,7 @@ Visit [Forum Clone](http://domz.me/frontend) to see it in action
 * Make threads
 * Make posts in threads
 * Reply to threads and posts
+* New posts and actions or posts are pushed live to all users viewing the thread
 
 ## Technologies
 * [ReactJS](https://reactjs.org/) - Frontend framework
@@ -22,17 +23,22 @@ Visit [Forum Clone](http://domz.me/frontend) to see it in action
 * [Socket.IO](https://socket.io/) - Websockets to push data out live
 ## To Do
 
-* Change password / username
-* Upvotes for threads and individual posts - posts done
-  * Sort threads / posts by upvotes 
-* Fix post dates (only saves local time currently) - DONE
-  * Make the date say posted how long ago - DONE
+* Upvotes for threads
+* Sort threads / posts by upvotes 
 * Communities
   * Each community has threads
 * Search for posts
 * Profile thumbnails
-* auto load new posts intermittently - DONE (other post functions still todo)
+* Profile page
+  * Profile thumbnail
+  * Change password / username
+  * View all your upvoted threads / posts (profile page?)
 
+#### Done
+* ~~Upvotes for posts~~
+* ~~Auto load new posts intermittently~~
+* ~~Fix post dates (only saves local time currently)~~
+  * ~~Make the date say posted how long ago~~
 
 
 
