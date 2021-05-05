@@ -36,6 +36,7 @@ export interface ThreadObject {
   content: string;
   _id: string;
   posts: PostObj[];
+  error?: string;
 }
 
 // TODO if your own post / thread, you can delete
@@ -62,7 +63,15 @@ const Thread = () => {
   /** Loads the thread. */
   async function loadThread() {
     const res = await fetch(server + "getThread/" + id);
-    const jsoned = await res.json();
+    const jsoned: ThreadObject = await res.json();
+
+    // thread doesn't exist or error in retrieving it
+    if (jsoned.hasOwnProperty("error")) {
+      // redirect to home
+      hist.push("/home");
+      return;
+    }
+
     if (JSON.stringify(jsoned) !== JSON.stringify(thread)) {
       setThread(jsoned);
       // // get top level posts
