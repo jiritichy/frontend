@@ -26,9 +26,7 @@ Visit [Forum Clone](http://domz.me/frontend) to see it in action
 
 * Upvotes for threads
 * Sort threads / posts by upvotes 
-* Communities
-  * Each community has threads
-  * If you are an admin of a community, you can delete posts and do other admin
+* If you are an admin of a community, you can delete posts and do other admin
 * Search for posts
 * Profile thumbnails
 * Profile page
@@ -41,6 +39,8 @@ Visit [Forum Clone](http://domz.me/frontend) to see it in action
 * ~~Auto load new posts intermittently~~
 * ~~Fix post dates (only saves local time currently)~~
   * ~~Make the date say posted how long ago~~
+* ~~Communities~~
+  * ~~Each community has threads~~
 
 
 
