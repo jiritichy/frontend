@@ -21,12 +21,14 @@ Visit [Forum Clone](http://domz.me/frontend) to see it in action
 * [Bootstrap](https://getbootstrap.com/) - CSS framework
 * [Create React App](https://github.com/facebook/create-react-app)
 * [Socket.IO](https://socket.io/) - Websockets to push data out live
+* [Fuzzy](https://www.npmjs.com/package/fuzzy) - Fuzzy search communities
 ## To Do
 
 * Upvotes for threads
 * Sort threads / posts by upvotes 
 * Communities
   * Each community has threads
+  * If you are an admin of a community, you can delete posts and do other admin
 * Search for posts
 * Profile thumbnails
 * Profile page
