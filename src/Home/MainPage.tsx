@@ -44,6 +44,7 @@ const Mainpage = () => {
     });
     setRenderedCommunities(results.map((item) => item.string));
 
+    // no matches
     if (results.length === 0) {
       setError("No matching communities could be found!");
     } else {
@@ -65,12 +66,12 @@ const Mainpage = () => {
       <div>
         <input
           type="text"
-          className="w-50"
+          className="w-75"
           onChange={(e) => searchCommunities(e.target.value)}
           value={searchValue}
         ></input>
       </div>
-      <div className="mt-4 d-flex">
+      <div className="row d-flex mt-4 flex-row text-left mx-5">
         {renderedCommunities.map((community) => (
           <Link key={community} to={"/c/" + community}>
             <div className="mx-2 ">
