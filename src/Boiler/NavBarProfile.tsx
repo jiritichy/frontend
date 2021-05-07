@@ -33,17 +33,22 @@ const NavBarProfile = () => {
     }
   }
 
-  // useEffect(() => {}, []);
-
   useEffect(() => {
+    let mounted = true;
     // explicitly redirect to login for all non specified routes
-    if (location.pathname === "/") {
+    if (location.pathname === "/" || location.pathname === "/login") {
       localStorage.removeItem("sessionID");
       history.push("/login");
-      setUsername("");
+      if (mounted) {
+        setUsername("");
+      }
       return;
     }
+
     getUsername();
+    return () => {
+      mounted = false;
+    };
   }, [location.pathname]);
 
   /** Logs the user out. */

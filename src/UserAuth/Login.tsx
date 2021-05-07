@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { useHistory, Link } from "react-router-dom";
+import { useHistory, Link, useLocation } from "react-router-dom";
 import { UserContext } from "../Home/UserContext";
 
 const Login: React.FC = () => {
@@ -10,6 +10,7 @@ const Login: React.FC = () => {
   const usernameAlias = useContext(UserContext).username;
   const setUsernameAlias = useContext(UserContext).setUsername;
 
+  const location = useLocation();
   const server = process.env.REACT_APP_API_SERVER;
 
   /** Logs the user in. */
@@ -48,14 +49,11 @@ const Login: React.FC = () => {
   }
 
   useEffect(() => {
-    // console.log("render login page");
-    // // log user out if visit the page while logged in
-    // if (usernameAlias) {
-    //   localStorage.removeItem("sessionID");
-    //   setUsernameAlias("");
-    //   setUsername("");
-    // }
-  }, []);
+    setUsernameAlias("");
+    if (location.pathname !== "/login") {
+      history.push("/login");
+    }
+  }, [location.pathname, history, setUsernameAlias]);
 
   return (
     <div className="container">
