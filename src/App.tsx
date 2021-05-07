@@ -3,12 +3,13 @@ import Footer from "./Boiler/Footer";
 import Login from "./UserAuth/Login";
 import Thread from "./Thread/Thread";
 import Register from "./UserAuth/Register";
-import Home from "./Home/Home";
+import Home from "./Community/Home";
 import { useState } from "react";
 import { HashRouter as Router, Switch, Route, Link } from "react-router-dom";
 import "./App.css";
 import { UserContext } from "./Home/UserContext";
 import { PostContext } from "./Home/PostContext";
+import Mainpage from "./Home/MainPage";
 
 function App() {
   const [username, setUsername] = useState("");
@@ -26,7 +27,7 @@ function App() {
           <Route path="/login">
             <Login />
           </Route>
-          <Route path="/thread/:id">
+          <Route path="/c/:communityName/:id">
             <PostContext.Provider
               value={{
                 voteReload: [postToReload, setPostToReload],
@@ -36,8 +37,11 @@ function App() {
               <Thread />
             </PostContext.Provider>
           </Route>
-          <Route path="/home">
+          <Route path="/c/:communityName">
             <Home />
+          </Route>
+          <Route path="/home">
+            <Mainpage />
           </Route>
           <Route path="/">
             <Login />

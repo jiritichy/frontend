@@ -1,20 +1,21 @@
 import { useState, useContext } from "react";
-import { UserContext } from "./UserContext";
+import { UserContext } from "../Home/UserContext";
 
 interface Props {
-  loadThreads: () => void;
+  communityName: string;
 }
 
 interface NewThread {
   username: string;
   content: string;
   title: string;
+  communityName: string;
 }
 
 const MAX_THREAD_TITLE_LENGTH = 150;
 const MAX_THREAD_CONTENT_LENGTH = 5000;
 
-const AddThread = ({ loadThreads }: Props) => {
+const AddThread = ({ communityName }: Props) => {
   const [addThreadOn, setAddThreadOn] = useState<boolean>(false);
   const server = process.env.REACT_APP_API_SERVER;
   const [content, setContent] = useState<string>("");
@@ -49,6 +50,7 @@ const AddThread = ({ loadThreads }: Props) => {
       username: username,
       content: content,
       title: title,
+      communityName: communityName,
     };
 
     try {
@@ -59,8 +61,6 @@ const AddThread = ({ loadThreads }: Props) => {
         },
         method: "POST",
       });
-      const response = await result.json();
-      loadThreads();
       setAddThreadOn((current) => !current);
     } catch (error) {
       // TODO error handling

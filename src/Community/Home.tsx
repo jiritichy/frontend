@@ -1,0 +1,90 @@
+import { useState, useEffect, useRef } from "react";
+import AddThread from "./AddThread";
+import ThreadCard from "./ThreadCard";
+import { ThreadObject } from "../Thread/Thread";
+import { useParams } from "react-router-dom";
+
+import io from "socket.io-client";
+const SOCKET_SERVER: any = process.env.REACT_APP_SOCKET_SERVER;
+const socket = io(SOCKET_SERVER);
+
+const Home = () => {
+  const [threads, setThreads] = useState<string[]>([]);
+  const server = process.env.REACT_APP_API_SERVER;
+  const { communityName } = useParams<{ communityName: string }>();
+  const [error, setError] = useState("");
+
+  // stateRef.current = threads;
+
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      const threads = await fetch(server + "getThreads/" + communityName);
+      const jsoned = await threads.json();
+      if (!mounted) {
+        return;
+      }
+      if (!threads) {
+        setError("Sorry! this page doesn't exist.");
+      }
+      if (mounted) {
+        setThreads(jsoned.threads);
+      }
+    })();
+
+    return () => {
+      mounted = false;
+    };
+  }, [communityName]);
+
+  // load all the posts for given thread
+  useEffect(() => {
+    // temp socket io
+    socket.connect();
+    socket.emit("onCommunity", communityName);
+    socket.on("newThread", (newThread: ThreadObject) => {
+      setThreads((current) => {
+        if (!current.includes(newThread._id)) {
+          return [...current, newThread._id];
+        }
+        return current;
+      });
+    });
+
+    socket.on("deletedThread", (threadID: string) => {
+      setThreads((current) => current.filter((x) => x !== threadID));
+    });
+
+    // cleanup
+    return () => {
+      socket.disconnect();
+    };
+  }, [communityName, threads]);
+
+  // error message
+  function renderError() {
+    if (error !== "") {
+      return (
+        <h1 className="alert alert-danger">Sorry something went wrong!</h1>
+      );
+    }
+  }
+
+  return (
+    <div className="container">
+      <h1 className="font-weight-bold my-3">{communityName}</h1>
+      {error === "" &&
+        threads.map((thread) => (
+          <ThreadCard
+            key={thread}
+            threadID={thread}
+            communityName={communityName}
+          />
+        ))}
+      {renderError()}
+      {error === "" && <AddThread communityName={communityName} />}
+    </div>
+  );
+};
+
+export default Home;

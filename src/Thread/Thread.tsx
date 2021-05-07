@@ -37,6 +37,7 @@ export interface ThreadObject {
   _id: string;
   posts: PostObj[];
   error?: string;
+  id?: string;
 }
 
 // TODO if your own post / thread, you can delete
@@ -53,7 +54,10 @@ const Thread = () => {
   const [thread, setThread] = useState<ThreadObject>(defaultThread);
 
   const server = process.env.REACT_APP_API_SERVER;
-  const { id } = useParams<{ id: string }>();
+  const { communityName, id } = useParams<{
+    communityName: string;
+    id: string;
+  }>();
   const hist = useHistory();
   const [topLevelPosts, setTopLevelPosts] = useState<PostObj[]>([]);
   const [newPostObj, setNewPostObj] = useState<PostObj | null>(null);
@@ -62,7 +66,7 @@ const Thread = () => {
 
   /** Loads the thread. */
   async function loadThread() {
-    const res = await fetch(server + "getThread/" + id);
+    const res = await fetch(`${server}getThread/${id}`);
     const jsoned: ThreadObject = await res.json();
 
     // thread doesn't exist or error in retrieving it
@@ -87,11 +91,11 @@ const Thread = () => {
   /** Deletes the thread. */
   async function deleteThread() {
     // TODO are u sure
-    const res = await fetch(server + "deleteThread/" + id);
+    const res = await fetch(`${server}deleteThread/${communityName}/${id}`);
     // console.log(res.json());
 
     // redirect to home
-    hist.push("/home");
+    hist.push(`/c/${communityName}`);
   }
 
   /** Renders possible actions for owner of a thread. */
@@ -153,8 +157,6 @@ const Thread = () => {
       socket.disconnect();
     };
   }, []);
-
-  // useEffect(() => {}, [thread]);
 
   // TODO if posts are empty, say no posts
   return (
