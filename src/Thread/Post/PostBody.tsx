@@ -7,6 +7,10 @@ interface Props {
 const PostBody = ({ post }: Props) => {
   /** Renders the image if necessary */
   function renderImage(): JSX.Element | void {
+    if (post.deleted) {
+      return;
+    }
+
     if (post.imageURL !== "") {
       return (
         <img
