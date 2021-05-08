@@ -10,6 +10,7 @@ import "./App.css";
 import { UserContext } from "./Home/UserContext";
 import { PostContext } from "./Home/PostContext";
 import Mainpage from "./Home/MainPage";
+import CommunityBanner from "./Community/CommunityBanner";
 
 function App() {
   const [username, setUsername] = useState("");
@@ -34,10 +35,12 @@ function App() {
                 deleteReload: [deletedPost, setDeletedPost],
               }}
             >
+              <CommunityBanner />
               <Thread />
             </PostContext.Provider>
           </Route>
           <Route path="/c/:communityName">
+            <CommunityBanner />
             <Home />
           </Route>
           <Route path="/home">

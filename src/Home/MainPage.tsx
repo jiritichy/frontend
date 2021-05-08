@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Fuzzy from "fuzzy";
 import { Link } from "react-router-dom";
+import AddCommunity, { Community } from "./AddCommunity";
 
 interface CommunityStub {
   _id: string;
@@ -14,6 +15,25 @@ const Mainpage = () => {
   const [error, setError] = useState("");
   const [renderedCommunities, setRenderedCommunities] = useState<string[]>([]);
   const server = process.env.REACT_APP_API_SERVER;
+
+  function addCommunity(community: Community) {
+    const smallCommunityStub: CommunityStub = {
+      _id: community._id,
+      communityName: community.communityName,
+      description: community.description,
+    };
+    setError("");
+    setSearchValue("");
+    setCommunities((currentCommunites) => [
+      ...currentCommunites,
+      smallCommunityStub,
+    ]);
+    setRenderedCommunities([
+      ...communitites.map((c) => c.communityName),
+      smallCommunityStub.communityName,
+    ]);
+    // console.log(community);
+  }
 
   useEffect(() => {
     // fetch communities
@@ -81,6 +101,7 @@ const Mainpage = () => {
         ))}
       </div>
       {renderError()}
+      <AddCommunity addCommunity={addCommunity} />
     </div>
   );
 };
