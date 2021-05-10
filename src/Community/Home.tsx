@@ -72,7 +72,6 @@ const Home = () => {
 
   return (
     <div className="container">
-      <h1 className="font-weight-bold my-3">{communityName}</h1>
       {error === "" &&
         threads.map((thread) => (
           <ThreadCard
