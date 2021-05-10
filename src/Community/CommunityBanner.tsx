@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useLocation, useParams } from "react-router";
+import { useLocation, useParams, Link } from "react-router-dom";
 
 interface CommunityBannerObj {
   _id: string;
@@ -9,6 +9,8 @@ interface CommunityBannerObj {
   admins: [];
   creatorUsername: string;
 }
+
+const SERVER = process.env.REACT_APP_API_SERVER;
 
 const CommunityBanner = () => {
   const defaultCommunity: CommunityBannerObj = {
@@ -26,17 +28,32 @@ const CommunityBanner = () => {
   const location = useLocation();
   const params: { communityName: string; id: string } = useParams();
 
-  const server = process.env.REACT_APP_API_SERVER;
   useEffect(() => {
+    let mounted = true;
     (async () => {
-      const resp = fetch(server + "getCommunity/" + params.communityName);
+      const resp = await fetch(SERVER + "getCommunity/" + params.communityName);
+      const jsoned: CommunityBannerObj = await resp.json();
+      if (mounted) {
+        setCommunity(jsoned);
+      }
     })();
-    setCommunityName(params.communityName);
-  }, []);
+    if (mounted) {
+      setCommunityName(params.communityName);
+    }
+
+    return () => {
+      mounted = false;
+    };
+  }, [params.communityName]);
 
   return (
     <div className="container-fluid bg-info mb-3">
-      <h1>{communityName}</h1>
+      <div className="container py-3">
+        <Link to={`/c/${communityName}`}>
+          <h3>{communityName}</h3>
+          <h6>{community.description}</h6>
+        </Link>
+      </div>
     </div>
   );
 };
