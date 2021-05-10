@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
 import { UserContext } from "./UserContext";
-import "./Overlay.css";
+import OverlayComponent from "../GenericComponents/OverlayComponent";
 
 export interface NewCommunity {
   /** The user who created the community. */
@@ -105,43 +105,35 @@ const AddCommunity = ({ addCommunity }: Props) => {
   function inputForm() {
     if (addCommunityOn) {
       return (
-        <div
-          className="form-group mt-4 container-fluid d-flex justify-content-center align-items-center"
-          id="overlay"
-        >
-          <div
-            className="d-flex flex-column bg-secondary justify-content-center w-75 px-5 py-5"
-            style={{ minWidth: "350px", maxWidth: "750px" }}
-          >
-            <h3>Create a community</h3>
-            <label className="text-left mt-2">Community Name</label>
-            <input
-              type="text"
-              className="form-control"
-              onChange={(e) => setCommunityName(e.target.value)}
-            />
-            <label className="mt-4 text-left">Description</label>
-            <textarea
-              className="form-control"
-              onChange={(e) => setDescription(e.target.value)}
-              rows={8}
-            />
-            <div className="d-flex justify-content-end mt-3">
-              <button
-                onClick={() => setAddCommunityOn((current) => !current)}
-                className="btn btn-primary mt-2 mr-2"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={makeCommunity}
-                className="btn btn-outline-primary mt-2"
-              >
-                Submit
-              </button>
-            </div>
+        <OverlayComponent>
+          <h3>Create a community</h3>
+          <label className="text-left mt-2">Community Name</label>
+          <input
+            type="text"
+            className="form-control"
+            onChange={(e) => setCommunityName(e.target.value)}
+          />
+          <label className="mt-4 text-left">Description</label>
+          <textarea
+            className="form-control"
+            onChange={(e) => setDescription(e.target.value)}
+            rows={8}
+          />
+          <div className="d-flex justify-content-end mt-3">
+            <button
+              onClick={() => setAddCommunityOn((current) => !current)}
+              className="btn btn-primary mt-2 mr-2"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={makeCommunity}
+              className="btn btn-outline-primary mt-2"
+            >
+              Submit
+            </button>
           </div>
-        </div>
+        </OverlayComponent>
       );
     }
 
