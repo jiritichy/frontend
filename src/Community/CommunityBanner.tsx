@@ -25,7 +25,7 @@ const CommunityBanner = () => {
   const [community, setCommunity] = useState<CommunityBannerObj>(
     defaultCommunity
   );
-  const location = useLocation();
+
   const params: { communityName: string; id: string } = useParams();
 
   useEffect(() => {
@@ -33,6 +33,10 @@ const CommunityBanner = () => {
     (async () => {
       const resp = await fetch(SERVER + "getCommunity/" + params.communityName);
       const jsoned: CommunityBannerObj = await resp.json();
+      if ("error" in jsoned) {
+        setCommunityName("Error.");
+        return;
+      }
       if (mounted) {
         setCommunity(jsoned);
       }

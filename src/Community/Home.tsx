@@ -21,11 +21,11 @@ const Home = () => {
     (async () => {
       const threads = await fetch(server + "getThreads/" + communityName);
       const jsoned = await threads.json();
+      if ("error" in jsoned) {
+        setError("Sorry! this page doesn't exist.");
+      }
       if (!mounted) {
         return;
-      }
-      if (!threads) {
-        setError("Sorry! this page doesn't exist.");
       }
       if (mounted) {
         setThreads(jsoned.threads);
@@ -64,9 +64,7 @@ const Home = () => {
   // error message
   function renderError() {
     if (error !== "") {
-      return (
-        <h1 className="alert alert-danger">Sorry something went wrong!</h1>
-      );
+      return <h1 className="alert alert-danger">{error}</h1>;
     }
   }
 
