@@ -34,6 +34,7 @@ const CommunityBanner = () => {
       const resp = await fetch(SERVER + "getCommunity/" + params.communityName);
       const jsoned: CommunityBannerObj = await resp.json();
       if ("error" in jsoned) {
+        setCommunity(defaultCommunity);
         setCommunityName("Error.");
         return;
       }
