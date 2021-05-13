@@ -5,9 +5,12 @@ import { Link, useParams, useHistory } from "react-router-dom";
 import Post from "./Post/Post";
 import AddPost from "./AddPost";
 import { UserContext } from "../Home/UserContext";
-
+import { defaultCommunity } from "../Community/CommunityBanner";
 import io from "socket.io-client";
 import { PostContext } from "../Home/PostContext";
+import { CommunityBannerObj } from "../Community/CommunityBanner";
+import { CommunityContext } from "./CommunityContext";
+
 const SOCKET_SERVER: any = process.env.REACT_APP_SOCKET_SERVER;
 const socket = io(SOCKET_SERVER);
 export interface PostObj {
@@ -53,6 +56,9 @@ export const defaultThread: ThreadObject = {
 const Thread = () => {
   const { username, setUsername } = useContext(UserContext);
   const [thread, setThread] = useState<ThreadObject>(defaultThread);
+  const [community, setCommunity] = useState<CommunityBannerObj>(
+    defaultCommunity
+  );
 
   const server = process.env.REACT_APP_API_SERVER;
   const { communityName, id } = useParams<{
@@ -101,7 +107,7 @@ const Thread = () => {
 
   /** Renders possible actions for owner of a thread. */
   function renderOwnerActions() {
-    if (thread.username === username) {
+    if (thread.username === username || community.admins.includes(username)) {
       return (
         <IconContext.Provider value={{ size: "1em" }}>
           <ImCross
@@ -126,66 +132,92 @@ const Thread = () => {
     return null;
   }
 
+  // set community
+  useEffect(() => {
+    let mounted = true;
+
+    (async () => {
+      const resp = await fetch(server + "getCommunity/" + communityName);
+      const jsoned: CommunityBannerObj = await resp.json();
+      if (!mounted) return;
+      if ("error" in jsoned) {
+        setCommunity(defaultCommunity);
+        return;
+      }
+
+      setCommunity(jsoned);
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
   // load all the posts for given thread
   useEffect(() => {
+    let mounted = true;
     loadThread();
-    // temp socket io
-    socket.connect();
-    socket.emit("onThread", id);
-    socket.on("newPost", (newPost: PostObj) => {
-      // store new post somewhere
+    if (mounted) {
+      // temp socket io
+      socket.connect();
+      socket.emit("onThread", id);
+      socket.on("newPost", (newPost: PostObj) => {
+        // store new post somewhere
 
-      // is top level
-      if (newPost.parentID === null) {
-        console.log("new top level post");
-        setTopLevelPosts((current) => [...current, newPost]);
-        // TODO https://dev.to/otamnitram/react-useeffect-cleanup-how-and-when-to-use-it-2hbm
-      } else {
-        setNewPostObj(newPost);
-      }
-    });
-    // post had its votes changed, reload
-    socket.on("upvotePost", (postID) => {
-      setPostToReload(postID);
-    });
-    // post deletion
-    socket.on("postDeleted", (postID) => {
-      setDeletedPost(postID);
-    });
+        // is top level
+        if (newPost.parentID === null) {
+          console.log("new top level post");
+          setTopLevelPosts((current) => [...current, newPost]);
+          // TODO https://dev.to/otamnitram/react-useeffect-cleanup-how-and-when-to-use-it-2hbm
+        } else {
+          setNewPostObj(newPost);
+        }
+      });
+      // post had its votes changed, reload
+      socket.on("upvotePost", (postID) => {
+        setPostToReload(postID);
+      });
+      // post deletion
+      socket.on("postDeleted", (postID) => {
+        setDeletedPost(postID);
+      });
+    }
 
     // cleanup
     return () => {
+      mounted = false;
       socket.disconnect();
     };
   }, []);
 
   // TODO if posts are empty, say no posts
   return (
-    <div className="container mt-3 mb-5">
-      <div className="row">
-        <div className="col d-inline-flex align-items-center">
-          <h1 className="mb-0">{thread.title}</h1>
-          {renderOwnerActions()}
+    <CommunityContext.Provider value={community}>
+      <div className="container mt-3 mb-5">
+        <div className="row">
+          <div className="col d-inline-flex align-items-center">
+            <h1 className="mb-0">{thread.title}</h1>
+            {renderOwnerActions()}
+          </div>
+        </div>
+        <h6>- {thread.username}</h6>
+        <p style={{ wordWrap: "break-word" }}>{thread.content}</p>
+        <AddPost threadID={id} loadThread={loadThread} />
+        <h4 className="mt-5">Replies:</h4>
+        <div className="container ">
+          {topLevelPosts.map((post, index) => (
+            <Post
+              key={index}
+              postID={post.id}
+              threadID={id}
+              loadThread={loadThread}
+              getPost={getPostByID}
+              indentLevel={0}
+              newPost={newPostObj}
+            />
+          ))}
         </div>
       </div>
-      <h6>- {thread.username}</h6>
-      <p style={{ wordWrap: "break-word" }}>{thread.content}</p>
-      <AddPost threadID={id} loadThread={loadThread} />
-      <h4 className="mt-5">Replies:</h4>
-      <div className="container ">
-        {topLevelPosts.map((post, index) => (
-          <Post
-            key={index}
-            postID={post.id}
-            threadID={id}
-            loadThread={loadThread}
-            getPost={getPostByID}
-            indentLevel={0}
-            newPost={newPostObj}
-          />
-        ))}
-      </div>
-    </div>
+    </CommunityContext.Provider>
   );
 };
 

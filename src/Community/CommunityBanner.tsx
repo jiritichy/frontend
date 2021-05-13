@@ -4,7 +4,7 @@ import { useLocation, useParams, Link } from "react-router-dom";
 import AdminPanel from "./Admin/AdminPanel";
 // import EditCommunity from "./Admin/EditCommunity";
 
-interface CommunityBannerObj {
+export interface CommunityBannerObj {
   _id: string;
   communityName: string;
   description: string;
@@ -15,15 +15,15 @@ interface CommunityBannerObj {
 
 const SERVER = process.env.REACT_APP_API_SERVER;
 
+export const defaultCommunity: CommunityBannerObj = {
+  _id: "",
+  admins: [],
+  description: "",
+  date: "",
+  communityName: "",
+  creatorUsername: "",
+};
 const CommunityBanner = () => {
-  const defaultCommunity: CommunityBannerObj = {
-    _id: "",
-    admins: [],
-    description: "",
-    date: "",
-    communityName: "",
-    creatorUsername: "",
-  };
   const [communityName, setCommunityName] = useState("");
   const { username }: { username: string } = useContext(UserContext);
   const [community, setCommunity] = useState<CommunityBannerObj>(

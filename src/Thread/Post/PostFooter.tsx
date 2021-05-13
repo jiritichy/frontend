@@ -2,6 +2,8 @@ import { PostObj } from "../Thread";
 import { UserContext } from "../../Home/UserContext";
 import { useContext } from "react";
 
+import { CommunityContext } from "../CommunityContext";
+import { CommunityBannerObj } from "../../Community/CommunityBanner";
 interface Props {
   post: PostObj;
   renderChildren: boolean;
@@ -19,6 +21,7 @@ const PostFooter = ({
 }: Props) => {
   const username = useContext(UserContext).username;
   const server = process.env.REACT_APP_API_SERVER;
+  const community: CommunityBannerObj = useContext(CommunityContext);
 
   /** Hides the post for the user. */
   async function hidePostServerSide() {
@@ -88,7 +91,7 @@ const PostFooter = ({
     }
 
     // only delete your own posts // TODO fix server side
-    if (post.username !== username) {
+    if (post.username !== username && !community.admins.includes(username)) {
       return;
     }
 
