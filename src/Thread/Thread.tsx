@@ -150,7 +150,7 @@ const Thread = () => {
     return () => {
       mounted = false;
     };
-  }, []);
+  }, [communityName]);
 
   // load all the posts for given thread
   useEffect(() => {

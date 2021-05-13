@@ -23,11 +23,13 @@ const Home = () => {
       const jsoned = await threads.json();
       if ("error" in jsoned) {
         setError("Sorry! this page doesn't exist.");
+        return;
       }
       if (!mounted) {
         return;
       }
       if (mounted) {
+        setError("");
         setThreads(jsoned.threads);
       }
     })();
