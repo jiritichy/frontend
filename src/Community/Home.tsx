@@ -41,25 +41,31 @@ const Home = () => {
 
   // load all the posts for given thread
   useEffect(() => {
+    let mounted = true;
     // temp socket io
     socket.connect();
     socket.emit("onCommunity", communityName);
     socket.on("newThread", (newThread: ThreadObject) => {
-      setThreads((current) => {
-        if (!current.includes(newThread._id)) {
-          return [...current, newThread._id];
-        }
-        return current;
-      });
+      if (mounted) {
+        setThreads((current) => {
+          if (!current.includes(newThread._id)) {
+            return [...current, newThread._id];
+          }
+          return current;
+        });
+      }
     });
 
     socket.on("deletedThread", (threadID: string) => {
-      setThreads((current) => current.filter((x) => x !== threadID));
+      if (mounted) {
+        setThreads((current) => current.filter((x) => x !== threadID));
+      }
     });
 
     // cleanup
     return () => {
       socket.disconnect();
+      mounted = false;
     };
   }, [communityName, threads]);
 
