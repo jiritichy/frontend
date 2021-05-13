@@ -193,15 +193,17 @@ const Thread = () => {
   return (
     <CommunityContext.Provider value={community}>
       <div className="container mt-3 mb-5">
-        <div className="row">
-          <div className="col d-inline-flex align-items-center">
-            <h1 className="mb-0">{thread.title}</h1>
-            {renderOwnerActions()}
+        <div className="container">
+          <div className="row">
+            <div className="col d-inline-flex align-items-center">
+              <h1 className="mb-0">{thread.title}</h1>
+              {renderOwnerActions()}
+            </div>
           </div>
+          <h6>- {thread.username}</h6>
+          <p style={{ wordWrap: "break-word" }}>{thread.content}</p>
+          <AddPost threadID={id} loadThread={loadThread} />
         </div>
-        <h6>- {thread.username}</h6>
-        <p style={{ wordWrap: "break-word" }}>{thread.content}</p>
-        <AddPost threadID={id} loadThread={loadThread} />
         <h4 className="mt-5">Replies:</h4>
         <div className="container ">
           {topLevelPosts.map((post, index) => (
