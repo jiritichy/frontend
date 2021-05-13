@@ -38,18 +38,19 @@ export interface ThreadObject {
   posts: PostObj[];
   error?: string;
   id?: string;
+  date: string;
 }
+export const defaultThread: ThreadObject = {
+  title: "",
+  content: "",
+  username: "",
+  _id: "",
+  posts: [],
+  date: "1",
+};
 
 // TODO if your own post / thread, you can delete
 const Thread = () => {
-  const defaultThread: ThreadObject = {
-    title: "",
-    content: "",
-    username: "",
-    _id: "",
-    posts: [],
-  };
-
   const { username, setUsername } = useContext(UserContext);
   const [thread, setThread] = useState<ThreadObject>(defaultThread);
 
