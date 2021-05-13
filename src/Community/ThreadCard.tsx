@@ -15,6 +15,20 @@ const ThreadCard = ({ threadID, communityName }: Props) => {
   // const [title, setTitle] = useState<string>("");
   const [thread, setThread] = useState<ThreadObject>(defaultThread);
   const server = process.env.REACT_APP_API_SERVER;
+  const [timeSince, setTimeSince] = useState<number>(0);
+
+  useEffect(() => {
+    let timer = setInterval(() => {
+      const time = new Date().getTime() - parseInt(thread.date);
+
+      setTimeSince(time);
+    }, 100);
+
+    // cleanup
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [thread.date]);
 
   /** Truncates text if necessary */
   function truncatedText() {
@@ -44,7 +58,6 @@ const ThreadCard = ({ threadID, communityName }: Props) => {
     if (!thread.date) {
       return;
     }
-    const timeSince = new Date().getTime() - parseInt(thread.date);
 
     return prettyMS(timeSince, { compact: true, verbose: true }) + " ago";
   }
