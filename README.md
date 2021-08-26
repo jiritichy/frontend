@@ -2,8 +2,6 @@
 
 The frontend for a forum / social media website built in an effort to learn full stack web development. 
 
-Visit [Forum Clone](http://domz.me/frontend) to see it in action
-
 ## Features
 
 * Log in / Register 
